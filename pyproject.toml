@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "steertrace"
+version = "0.1.0"
+description = "Evidence-grounded judgment and error attribution analysis for AI collaboration"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/MolMind/SteerTrace"
+Repository = "https://github.com/MolMind/SteerTrace"
+Issues = "https://github.com/MolMind/SteerTrace/issues"
+
+[project.scripts]
+steertrace = "steertrace.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+steertrace = ["assets/*.css", "assets/*.js", "assets/*.svg", "assets/*.txt"]
