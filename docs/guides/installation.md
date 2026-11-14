@@ -53,3 +53,12 @@ macOS/Linux 源码运行也可使用 `PYTHONPATH=src python3 -m steertrace`。
 
 安装 Python 工具和注册 Skill 是两个步骤。CLI 安装成功不代表客户端已经发现 Skill，
 也不代表能够读取当前会话。客户端详情见[适配指南](clients.md)。
+
+## macOS 与 Windows 安装验证
+
+GitHub Actions 分别在 macOS、Windows 上执行 `python scripts/check_install.py`：
+创建隔离环境、从仓库安装包、检查 CLI 和内嵌资源、复制 Skill 并验证配套文档、
+在带空格和中文的路径中跑通人工构造报告。该检查不修改真实客户端配置，不依赖符号链接。
+
+这验证操作系统层面的安装和本地运行链路；具体客户端的 Skill 发现与当前会话权限，
+仍由安装 Agent 按客户端实际机制核对。完整 checkout 需保留，不能仅复制 Skill 后删除仓库。
