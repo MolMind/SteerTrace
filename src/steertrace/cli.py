@@ -65,7 +65,7 @@ def main(argv: list[str] | None = None) -> int:
                            args.max_record_mib * 1024 * 1024)
             write_json(args.output, data)
             print(json.dumps({"messages": len(data["messages"]), "selection": data["selection"],
-                              "output": str(args.output)}, ensure_ascii=False))
+                              "output": str(args.output)}, ensure_ascii=True))
         elif args.command == "import":
             if not 1 <= args.max_record_mib <= 64:
                 raise TraceError("--max-record-mib must be between 1 and 64.")
@@ -73,24 +73,24 @@ def main(argv: list[str] | None = None) -> int:
                                        args.max_record_mib * 1024 * 1024)
             write_json(args.output, data)
             print(json.dumps({"conversation_id": data["conversation_id"], "messages": len(data["messages"]),
-                              "coverage": data["coverage"], "output": str(args.output)}, ensure_ascii=False))
+                              "coverage": data["coverage"], "output": str(args.output)}, ensure_ascii=True))
         elif args.command == "prepare":
             data = prepare(args.conversation, args.project, args.docs, args.output,
                            args.allow_partial, args.chunk_chars)
             print(json.dumps({"run_id": data["run_id"], "prompt_count": data["prompt_count"],
                               "next": "Read ANALYZE.md and all prompts; author events.json, then validate/report.",
-                              "output": str(args.output)}, ensure_ascii=False))
+                              "output": str(args.output)}, ensure_ascii=True))
         elif args.command == "validate":
             data = validate(args.run, read_json(args.events))
             if args.output:
                 write_json(args.output, data)
-            print(json.dumps(data, ensure_ascii=False, indent=2))
+            print(json.dumps(data, ensure_ascii=True, indent=2))
             return 0 if data["valid"] else 1
         elif args.command == "report":
             text, validation = render(args.run, read_json(args.events))
             write_text(args.output, text)
             print(json.dumps({"report": str(args.output), "events": validation["events_checked"],
-                              "quotes": validation["quotes_checked"]}, ensure_ascii=False))
+                              "quotes": validation["quotes_checked"]}, ensure_ascii=True))
         return 0
     except (TraceError, OSError, UnicodeError) as exc:
         print(f"steertrace: {exc}", file=sys.stderr)

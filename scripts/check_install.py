@@ -30,8 +30,11 @@ def main() -> None:
 
         def run(*args: object) -> str:
             result = subprocess.run([str(cli), *map(str, args)], cwd=home,
-                                    check=True, capture_output=True, text=True,
-                                    encoding='utf-8')
+                                    check=False, capture_output=True, text=True,
+                                    encoding='utf-8',
+                                    env={**os.environ, 'PYTHONIOENCODING': 'cp1252'})
+            if result.returncode:
+                raise RuntimeError(f"CLI failed ({result.returncode}): {result.stdout!a} {result.stderr!a}")
             return result.stdout
 
         assert run('--version').strip() == '0.1.0'
