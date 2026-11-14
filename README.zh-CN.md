@@ -1,5 +1,7 @@
 # SteerTrace
 
+![SteerTrace：强化思维，让与 AI 的协作更有依据](docs/assets/steertrace-banner.png)
+
 **审视判断、追溯错误、让决策有据可依，强化你与 AI 协作时的思维方式。**
 
 [English](README.md) · [文档中心](docs/README.md) · [Skill](skills/steer-trace/SKILL.md)

@@ -1,5 +1,7 @@
 # SteerTrace
 
+![SteerTrace — Stronger thinking. Better AI collaboration.](docs/assets/steertrace-banner.png)
+
 **Strengthen your thinking when working with AI by examining judgment, tracing errors, and grounding decisions in evidence.**
 
 [中文](README.zh-CN.md) · [Documentation](docs/README.md) · [Skill](skills/steer-trace/SKILL.md)
