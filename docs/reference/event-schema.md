@@ -76,7 +76,7 @@ association is supported, leave the list empty and describe the limitation.
 Describe a concrete reasoning direction and its value at an actual decision point. Do not add a suggestion
 just to fill a quota. Do not infer stable personal traits from a single session.
 
-See [the public synthetic analysis](../examples/synthetic/analysis.json) for a full
+See [the public synthetic analysis](../../examples/synthetic/analysis.json) for a full
 example. Its run_id placeholder is replaced by the demo only; it is not an
 autonomous extraction benchmark.
 
@@ -121,7 +121,7 @@ fields shown above and references to existing events. `basis` is
 Citation checks cannot determine whether a criticism is fair. The agent must
 consider context, later corrections, and counterevidence; never force a quota.
 
-All displayed text follows the [report style contract](../skills/collaboration-judgment-review/references/report-style.md).
+All displayed text follows the [report style contract](../../skills/steer-trace/references/report-style.md).
 Use plain language. Firm criticism of a specific judgment is encouraged when
 supported. Personality labels, presumed motives, intelligence ratings, invented
 outcomes, and source IDs embedded in prose do not belong in the report.
@@ -133,4 +133,4 @@ Recommendations are thinking-strengthening directions, not instructions to the r
 specific decision context. Apply this tone to `better_move` and `keep_doing` too.
 Keep `uncertainty` and `limitations` in analysis JSON; the report omits their standalone
 sections. Material qualifications belong in the finding they affect. See the
-[report style contract](../skills/collaboration-judgment-review/references/report-style.md).
+[report style contract](../../skills/steer-trace/references/report-style.md).

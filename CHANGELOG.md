@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- Simplify the READMEs around thinking-strengthening value and agent-managed setup;
+  group installation, client integration, reference, and development docs by purpose.
+
+- Align the Skill name and directory with the project brand: `steer-trace`.
+
+- Default Skill invocations to the current conversation, with explicit targets taking precedence.
+- Add `capture` with exact invocation cutoff, identified Codex/Claude file resolution,
+  and conservative DeepSeek Harness append-event import.
+- Document native history/export acquisition and fail clearly when the host does
+  not expose original history; never guess the latest transcript.
+
 ## 0.1.0 — 2026-11-13
 
 Initial release of SteerTrace: a Skill and local Python CLI for examining judgment

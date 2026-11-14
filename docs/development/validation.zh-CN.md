@@ -14,7 +14,7 @@
 
 ## 本地验证
 
-环境：macOS、Python 3.9.6。复现命令见根目录 README 与 CONTRIBUTING.md。
+环境：macOS、Python 3.9.6。复现命令见根目录 README、使用指南与 CONTRIBUTING.md。
 
 | 验证 | 结果 |
 | --- | --- |

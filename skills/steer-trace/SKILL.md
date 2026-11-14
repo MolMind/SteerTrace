@@ -1,9 +1,9 @@
 ---
-name: collaboration-judgment-review
-description: Analyze judgment and error attribution when working with AI, using explicitly selected conversation exports and project documents. Examine the evidence behind accepting or rejecting advice, distinguish supported explanations from unverified causal claims, and identify evidence-grounded directions for strengthening judgment. Not a personality assessment or a reconstruction of hidden thoughts.
+name: steer-trace
+description: Analyze judgment and error attribution when working with AI, using the current session by default or an explicitly specified conversation and project documents. Examine the evidence behind accepting or rejecting advice, distinguish supported explanations from unverified causal claims, and identify evidence-grounded directions for strengthening judgment. Not a personality assessment or a reconstruction of hidden thoughts.
 ---
 
-# Collaboration Judgment Review
+# SteerTrace
 
 Use SteerTrace to analyze how the user framed a problem, evaluated AI advice,
 made decisions, and attributed or corrected errors in a specified conversation.
@@ -12,13 +12,28 @@ hypotheses and unresolved causes. Do not infer causality from sequence alone. Re
 the user's stated scope; do not discover unrelated account histories. No API key
 or new model process is required: semantic analysis belongs to the invoking agent.
 
+## User entry point
+
+“分析这个会话” or invoking this Skill is sufficient. Resolve the current session
+internally using the verified client rules in [session selection](references/session-selection.md).
+Do not ask the user for a path, ID, export or CLI command when native access works.
+An explicitly specified conversation/file takes precedence.
+
+Claude Code current-session substitution: `${CLAUDE_SESSION_ID}`.
+Use this only if Claude Code expanded it to an actual ID; other hosts may leave
+it literal. It is not a shell variable requirement. Codex and Harness use their
+own current-session identities and the client-specific native routes.
+
 ## Run
 
-1. Read the repository's `docs/event-schema.md` before authoring events. Use the
+1. Read the repository's `docs/reference/event-schema.md` before authoring events. Use the
    installed `steertrace` CLI, or `PYTHONPATH=<repo>/src python3 -m steertrace`.
-2. Import the specified export with `import --input ... --output ...`. Prefer an
-   existing readable export; if none is available, request the missing input.
-   Claude forks require an explicit leaf when ambiguous. Keep run data private.
+2. Resolve the target using [session selection](references/session-selection.md).
+   Explicit files/conversations take precedence; otherwise capture the current
+   session before the invoking user message, excluding that message and all later
+   activity. Prefer native session evidence; never guess the latest transcript.
+   Use `capture` for the current session and `import` for explicit historical
+   exports. Ask for input only if native evidence/identity is unavailable.
 3. Freeze only the specified project documents with `prepare --conversation ...
    --project ... --docs ... --output ...`. No document list means no document
    evidence, not permission to scan the project. Do not allow partial history

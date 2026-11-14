@@ -169,7 +169,7 @@ def prepare(conversation_path: Path, project: Path, docs: list[str], output: Pat
     write_json(output / "events.template.json", event_template(run_id))
     write_text(output / "ANALYZE.md", INSTRUCTIONS +
                f"\nRun ID: `{run_id}`\nRead all {len(parts)} files under prompts/. "
-               "See the repository docs/event-schema.md for the analysis contract.\n")
+               "See the repository docs/reference/event-schema.md for the analysis contract.\n")
     for i, part in enumerate(parts, 1):
         write_text(output / "prompts" / f"{i:04d}.md",
                    f"# Evidence packet {i}/{len(parts)}\n\n{INSTRUCTIONS}\n"

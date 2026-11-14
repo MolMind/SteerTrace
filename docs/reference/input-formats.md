@@ -1,6 +1,6 @@
 # Input formats and coverage
 
-Use explicit files. SteerTrace does not discover all account sessions. The v0.1
+Use explicit files or an identified current session. SteerTrace does not discover all account sessions. The v0.1
 importers are conservative readers, not a promise to support every historical
 version, remote session, plugin event, or proprietary storage format.
 
@@ -59,3 +59,25 @@ mixed or interpreted as complete. Subagent logs are not merged automatically.
 - Plain-text `/export` renderings and Agent Insight report.json are not accepted
   as full source conversations by a dedicated adapter. Convert to explicit
   role-labeled JSON with preserved provenance; do not invent missing turns.
+
+## Current-session capture
+
+`capture` imports a native transcript or a generic export, then excludes the
+invoking user message and all later dialogue. Use its exact normalized message ID
+or unique full original text; missing/ambiguous boundaries fail without output.
+`import` continues to retain the full explicitly specified export.
+
+Codex and Claude path resolution requires a reliable session ID. Only matching
+filenames are inspected; unrelated transcripts are not opened. Other clients
+require their native transcript/export path. Host APIs must provide original
+role-labeled messages; status summaries are insufficient.
+
+## DeepSeek Harness append events
+
+Uncompressed JSONL supports `user/message` with `data.id`, `data.content` and
+`data.source.kind == "user"`; `assistant/message` uses `data.message.id` and
+`data.message.content`. Both require `surfaceOp: "append"`. Streaming chunks and
+non-user injected messages are excluded. Non-append operations are rejected.
+Compressed/seeded/forked logs and other versions require a native selected-dialogue
+export to generic JSON, preserving IDs, text and coverage. This adapter does not
+claim support for every Harness persistence version.

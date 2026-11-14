@@ -155,9 +155,11 @@ def import_conversation(path: Path, source: str = "auto", leaf_id: str | None = 
             source = "codex"
         elif any("uuid" in r and r.get("type") in {"user", "assistant"} for r in records):
             source = "claude"
+        elif any(r.get("type") in {"user/message", "assistant/message"} for r in records):
+            source = "harness"
         else:
             source = "generic"
-    if source not in {"codex", "claude", "generic"}:
+    if source not in {"codex", "claude", "harness", "generic"}:
         raise TraceError(f"Unsupported source: {source}")
     if leaf_id and source != "claude":
         raise TraceError("--leaf-id applies only to Claude.")
@@ -166,6 +168,23 @@ def import_conversation(path: Path, source: str = "auto", leaf_id: str | None = 
         for row in claude_branch(records, leaf_id):
             msg = row.get("message", {})
             candidates.append((row["uuid"], row.get("type"), msg.get("content"), row.get("timestamp")))
+    elif source == "harness":
+        for i, row in enumerate(records, 1):
+            if row.get("type") not in {"user/message", "assistant/message"}:
+                continue
+            if row.get("surfaceOp") != "append":
+                raise TraceError("Harness non-append history requires a native selected-branch export.")
+            payload = row.get("data", {})
+            if not isinstance(payload, dict):
+                raise TraceError("Invalid Harness message data.")
+            msg = payload.get("message", {}) if row["type"] == "assistant/message" else payload
+            if not isinstance(msg, dict) or not isinstance(msg.get("id"), str):
+                raise TraceError("Harness message requires a stable ID.")
+            if row["type"] == "user/message" and (not isinstance(msg.get("source"), dict) or msg["source"].get("kind") != "user"):
+                excluded_role = "tool"
+            else:
+                excluded_role = "user" if row["type"] == "user/message" else "assistant"
+            candidates.append((msg["id"], excluded_role, msg.get("content"), row.get("time")))
     elif source == "codex":
         rollback_types = ("thread_rolled_back", "conversation_rollback", "thread_rollback")
         if any(r.get("type") in rollback_types or
