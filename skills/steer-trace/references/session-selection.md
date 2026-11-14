@@ -6,8 +6,11 @@ An explicit conversation/file takes precedence over the current chat. Resolve on
 that target. Do not silently fall back to this chat if the requested target is
 unavailable. Explicit historical exports use `import`; honor a user-specified range.
 
-Otherwise, “analyze this conversation” or invoking this Skill means the current
-host session. The invoking user message is an exclusive boundary: exclude it and
+Otherwise, "Analyze this conversation", an equivalent request in any language,
+or invoking this Skill means the current host session. Resolve intent semantically,
+not by a fixed trigger phrase. For cutoff validation, retain the invoking message's
+original ID and text, without translating or paraphrasing it.
+The invoking user message is an exclusive boundary: exclude it and
 all subsequent assistant/tool/analysis activity. Obtain that boundary before work.
 
 ## Acquire native evidence

@@ -14,8 +14,13 @@ or new model process is required: semantic analysis belongs to the invoking agen
 
 ## User entry point
 
-“分析这个会话” or invoking this Skill is sufficient. Resolve the current session
-internally using the verified client rules in [session selection](references/session-selection.md).
+Users can say "Analyze this conversation" or invoke this Skill directly.
+Equivalent natural-language requests in other languages are supported; English
+is an example, not a required phrase or invocation language. Recognize the user's
+intent rather than matching a fixed keyword or exact wording.
+
+Resolve the current session internally using the verified client rules in
+[session selection](references/session-selection.md).
 Do not ask the user for a path, ID, export or CLI command when native access works.
 An explicitly specified conversation/file takes precedence.
 
