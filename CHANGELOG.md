@@ -2,6 +2,8 @@
 
 ## 0.2.1
 
+- Run the macOS installation check on the supported Intel runner to avoid arm64 capacity failures.
+
 - 明确已有有效做法与新增建议的边界，提供具体检查意见并保留归因和证据限定；事件格式兼容，旧版仍受支持，不强制升级。
 
 - Separate evidenced existing strengths from incremental advice; keep completed checks
