@@ -1,5 +1,7 @@
 # Contributing
 
+Before commits, pushes, tags or releases, read [the release rules](docs/development/releasing.md).
+
 Run `PYTHONPATH=src python3 -m unittest discover -s tests -v` and replay the public
 demo into a fresh run directory before proposing a change.
 

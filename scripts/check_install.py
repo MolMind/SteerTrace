@@ -37,7 +37,9 @@ def main() -> None:
                 raise RuntimeError(f"CLI failed ({result.returncode}): {result.stdout!a} {result.stderr!a}")
             return result.stdout
 
-        assert run('--version').strip() == '0.1.0'
+        version_source = (ROOT / 'src/steertrace/__init__.py').read_text(encoding='utf-8')
+        expected_version = re.search(r'__version__ = "([^"]+)"', version_source).group(1)
+        assert run('--version').strip() == expected_version
         subprocess.run([str(python), '-c', '''from importlib.resources import files
 assets = files('steertrace').joinpath('assets')
 for name in ['report.css', 'report.js', 'tabler-chevron-right.svg', 'tabler-LICENSE.txt']:
@@ -72,7 +74,10 @@ for name in ['report.css', 'report.js', 'tabler-chevron-right.svg', 'tabler-LICE
         checked = json.loads(run('validate', '--run', home / 'review', '--events', events))
         assert checked['valid']
         run('report', '--run', home / 'review', '--events', events, '--output', home / 'report.html')
-        assert (home / 'report.html').read_text(encoding='utf-8').startswith('<!doctype html>')
+        report = (home / 'report.html').read_text(encoding='utf-8')
+        assert report.startswith('<!doctype html>')
+        assert f'生成工具：SteerTrace v{expected_version}' in report
+        assert f'<meta name="generator" content="SteerTrace {expected_version}">' in report
         print('PASS: isolated package install, CLI, packaged assets, Skill copy/references, '
               'Unicode/space paths, and synthetic report workflow. '
               'Real client discovery and current-session access require client verification.')

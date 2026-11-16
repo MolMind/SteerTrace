@@ -68,3 +68,5 @@ SteerTrace 关注你如何定义问题、评估 AI 建议、作出取舍，以�
 [MIT](LICENSE) · 版权所有 © 2026 SteerTrace contributors。
 随包 [Tabler Icons](https://tabler.io/icons) 同样采用 MIT 许可证，
 已保留[上游许可声明](src/steertrace/assets/tabler-LICENSE.txt)。
+
+稳定版本支持使用前检查及管理升级；已有用户需先[迁移一次安装](docs/guides/installation.md#迁移已有安装)。

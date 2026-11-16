@@ -1,0 +1,4 @@
+{
+  "minimum_supported_version": "0.1.0",
+  "reason": "增加版本检查与独立安装升级；旧版仍受支持，本次不强制升级。"
+}

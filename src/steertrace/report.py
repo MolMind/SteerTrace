@@ -5,6 +5,7 @@ from html import escape
 from importlib.resources import files
 from pathlib import Path
 
+from . import __version__
 from .report_time import parse_time
 from .storage import TraceError
 from .validation import load_run, validate
@@ -138,6 +139,7 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
     html = f'''<!doctype html>
 <!-- {icon_license} -->
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="SteerTrace {h(__version__)}">
 <meta name="color-scheme" content="light"><meta name="referrer" content="no-referrer">
 <title>SteerTrace — 判断与归因分析</title><style>{css}</style></head>
 <body><a class="skip" href="#main">跳到报告正文</a>
@@ -176,5 +178,5 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
 <div class="filter-buttons" role="group" aria-label="筛选判断"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="attention" aria-pressed="false">值得关注</button><button data-filter="choice" aria-pressed="false">取舍与选择</button></div></div>
 <p id="match-count" class="muted" aria-live="polite"></p><div class="timeline">{event_html}</div><p id="no-matches" class="empty" hidden>没有找到符合条件的判断，试试清空搜索或切换分类。</p></section>
 <section id="next"><div class="section-heading"><span class="section-number">04</span><h2>思维强化方向</h2></div>{rec_html}</section>
-<footer><a class="brand" href="#top">SteerTrace</a><span>看清判断依据，让下一次思考更清楚。</span><a href="#top">返回顶部 {icon("chevron-up")}</a></footer></div></main><script>{js}</script></body></html>'''
+<footer><a class="brand" href="#top">SteerTrace</a><span class="footer-info"><span class="report-version">生成工具：SteerTrace v{h(__version__)}</span><span>看清判断依据，让下一次思考更清楚。</span></span><a href="#top">返回顶部 {icon("chevron-up")}</a></footer></div></main><script>{js}</script></body></html>'''
     return html, result

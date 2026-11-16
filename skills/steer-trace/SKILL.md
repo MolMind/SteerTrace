@@ -29,6 +29,12 @@ Use this only if Claude Code expanded it to an actual ID; other hosts may leave
 it literal. It is not a shell variable requirement. Codex and Harness use their
 own current-session identities and the client-specific native routes.
 
+## Version check
+
+Before analysis, follow [stable updates](references/updates.md). Managed installs
+check and apply stable updates, preserving local modifications and known minimum
+version requirements. After updating, reload this Skill and use the new Python/source.
+
 ## Run
 
 1. Read the repository's `docs/reference/event-schema.md` before authoring events. Use the

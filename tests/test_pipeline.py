@@ -109,6 +109,14 @@ class PipelineTests(unittest.TestCase):
         self.assertTrue(result['valid'])
         self.assertTrue(any('semantic completeness' in w for w in result['warnings']))
 
+    def test_report_version_tracks_generator_instead_of_analysis_data(self):
+        from unittest.mock import patch
+        with patch('steertrace.report.__version__', '9.8.7'):
+            text, checked = render(self.run, self.events)
+        self.assertTrue(checked['valid'])
+        self.assertIn('生成工具：SteerTrace v9.8.7', text)
+        self.assertIn('<meta name="generator" content="SteerTrace 9.8.7">', text)
+
     def test_example_end_to_end(self):
         text, checked = render(self.run, self.events)
         self.assertTrue(checked["valid"])

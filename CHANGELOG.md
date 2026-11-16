@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0
+
+- Display the generator version in the HTML footer and metadata; verify it against the CLI on installation.
+
+- Add a single version source, release policy, Agent publishing rules and tag-based Release assets.
+- Add cached stable-version checks and isolated managed upgrades with digest verification,
+  local-modification protection, failed-update recovery and minimum-version enforcement.
+- Add problem attribution, AI response summaries, source timestamps and clearer report typography.
+- Existing versions remain supported; this release does not require a mandatory upgrade.
+
 ## Unreleased
 
 - Check action status and numeric criterion purpose/scope before consequential claims;

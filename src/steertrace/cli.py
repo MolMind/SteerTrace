@@ -52,13 +52,24 @@ def parser() -> argparse.ArgumentParser:
     report.add_argument("--run", required=True, type=Path)
     report.add_argument("--events", required=True, type=Path)
     report.add_argument("--output", required=True, type=Path)
+    upgrade = commands.add_parser("update", help="Check stable releases and update a managed installation.")
+    upgrade.add_argument("--install-root", required=True, type=Path)
+    upgrade.add_argument("--skill-dir", type=Path, help="Client Skill directory; required for first installation.")
+    upgrade.add_argument("--adopt-from", type=Path, help="Retained source checkout matching an existing unmodified Skill copy.")
+    upgrade.add_argument("--check-only", action="store_true")
+    upgrade.add_argument("--force-check", action="store_true", help="Bypass the 24-hour metadata cache.")
     return cli
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
-        if args.command == "capture":
+        if args.command == "update":
+            from .updates import update
+            data = update(args.install_root, args.skill_dir, args.check_only, args.force_check, args.adopt_from)
+            print(json.dumps(data, ensure_ascii=True, indent=2))
+            return 0 if data["can_run"] else 2
+        elif args.command == "capture":
             path = args.input or locate(args.source, args.session_id, args.session_root)
             text = args.before_text_file.read_text(encoding="utf-8") if args.before_text_file else None
             data = capture(path, args.source, args.before_message_id, text, args.leaf_id,

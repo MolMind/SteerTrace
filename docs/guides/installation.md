@@ -62,3 +62,48 @@ GitHub Actions 分别在 macOS、Windows 上执行 `python scripts/check_install
 
 这验证操作系统层面的安装和本地运行链路；具体客户端的 Skill 发现与当前会话权限，
 仍由安装 Agent 按客户端实际机制核对。完整 checkout 需保留，不能仅复制 Skill 后删除仓库。
+
+## 稳定版本与自动更新
+
+推荐使用管理安装：稳定源码、Python 环境和客户端 Skill 作为同一版本一起切换。
+首次需保留一个官方 checkout 用于运行引导脚本，并指定客户端实际支持的 Skill 目录。
+以下路径为示例，Agent 必须先核实客户端目录，不能直接照搬。
+
+```bash
+python3 scripts/update.py --install-root "$HOME/.local/share/steertrace" --skill-dir /实际客户端技能目录/steer-trace --force-check
+```
+
+Windows PowerShell：
+
+```powershell
+python scripts/update.py --install-root "$env:LOCALAPPDATA\SteerTrace" --skill-dir "C:\实际客户端技能目录\steer-trace" --force-check
+```
+
+初次安装需要已有稳定 GitHub Release 和两个官方附件。仓库只有源码或 Release 尚未发布时，
+脚本会说明未安装，不能声称已经自动更新。可用前面的手动方式体验开发源码。
+管理安装保留源码和独立环境；安装到客户端的 Skill 内含 `.steertrace-install.json`，
+记录当前 Python、源码与安装根目录。Skill 每次调用先使用该记录执行更新，自动查询缓存
+24 小时；手动检查可加 `--check-only`，明确更新则加 `--force-check`。
+成功后使用输出中的新 Python 和源码路径，并重新读取 Skill。客户端若需要刷新发现，
+按其实际机制处理，不假定当前会话会自动重载。
+
+### 迁移已有安装
+
+没有更新入口的旧 Skill 不会自行获得新规则，必须先更新一次。
+Agent 先从官方仓库取得包含 `scripts/update.py` 的源码，保留旧安装并核对真实来源。
+对没有本地修改、且为复制安装的 Skill，可使用匹配旧文件的 checkout 证明其来源：
+
+```bash
+python3 /新版引导仓库/scripts/update.py --install-root /独立安装目录 --skill-dir /实际客户端技能目录/steer-trace --adopt-from /匹配旧技能文件的仓库 --force-check
+```
+
+不要求 `--adopt-from` 的源码是最新；它用于核对当前 Skill 副本，而新安装始终来自
+最新稳定 Release。链接安装需先按客户端机制显式迁移为副本；脚本不会修改链接指向的源码。
+有定制时先保存并迁移定制，不删除旧安装来绕过保护。
+成功升级保留旧 Skill 备份及旧环境；只更新本工具的安装，不改全局 Python 或其他技能。
+原先的普通 pip 安装或 editable 环境仍保留，但后续使用管理安装返回的新环境。
+
+受支持旧版升级失败可继续；低于已知最低支持版本则暂停新分析。断网时不能证明已经最新，
+也不会清除缓存中已知的强制升级要求。若进程意外退出留下 `update.lock`，确认没有升级进程
+运行后再移除锁重试。需要回退时，在无升级进程运行的条件下恢复匹配的旧 Skill 备份和安装
+记录；不能仅替换 Skill 却继续使用不匹配的新工具环境。

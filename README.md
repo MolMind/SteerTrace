@@ -77,3 +77,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and the [changelog](CHANGELOG.md).
 [MIT](LICENSE) · Copyright (c) 2026 SteerTrace contributors.
 Bundled [Tabler Icons](https://tabler.io/icons) are also MIT-licensed;
 [upstream notice](src/steertrace/assets/tabler-LICENSE.txt) is included.
+
+Stable releases support managed updates before analysis. Existing installations need a [one-time migration](docs/guides/installation.md#迁移已有安装).
