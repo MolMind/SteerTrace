@@ -1,18 +1,20 @@
 # Changelog
 
-## 0.2.0
+## 0.2.1
 
-- Automatically tag and publish tested default-branch updates; safely skip exact release reruns.
+- 明确已有有效做法与新增建议的边界，提供具体检查意见并保留归因和证据限定；事件格式兼容，旧版仍受支持，不强制升级。
 
-- Display the generator version in the HTML footer and metadata; verify it against the CLI on installation.
+- Separate evidenced existing strengths from incremental advice; keep completed checks
+  in strengths unless a stated new condition changes the decision evidence needed.
+- Add completed, unresolved and changed-scope report regression examples; preserve
+  the v1 event format and historical evaluation artifacts.
 
-- Add a single version source, release policy, Agent publishing rules and tag-based Release assets.
-- Add cached stable-version checks and isolated managed upgrades with digest verification,
-  local-modification protection, failed-update recovery and minimum-version enforcement.
-- Add problem attribution, AI response summaries, source timestamps and clearer report typography.
-- Existing versions remain supported; this release does not require a mandatory upgrade.
-
-## Unreleased
+- Align reviews with idea-to-delivery collaboration: inspect AI proposals behind user
+  decisions, surface consequential omissions, and offer concrete questions and checks
+  without inferring hidden thought or assigning AI mistakes to the user.
+- Allow actionable advice in existing report fields; add six complete synthetic
+  collaboration cases and frozen before/after prompts, without claiming quality gains
+  from structural regression tests or prepared evaluation tasks.
 
 - Check action status and numeric criterion purpose/scope before consequential claims;
   distinguish requests from execution and rollback triggers from acceptance standards.
@@ -43,6 +45,19 @@
   and conservative DeepSeek Harness append-event import.
 - Document native history/export acquisition and fail clearly when the host does
   not expose original history; never guess the latest transcript.
+
+
+## 0.2.0
+
+- Automatically tag and publish tested default-branch updates; safely skip exact release reruns.
+
+- Display the generator version in the HTML footer and metadata; verify it against the CLI on installation.
+
+- Add a single version source, release policy, Agent publishing rules and tag-based Release assets.
+- Add cached stable-version checks and isolated managed upgrades with digest verification,
+  local-modification protection, failed-update recovery and minimum-version enforcement.
+- Add problem attribution, AI response summaries, source timestamps and clearer report typography.
+- Existing versions remain supported; this release does not require a mandatory upgrade.
 
 ## 0.1.0 — 2026-11-13
 

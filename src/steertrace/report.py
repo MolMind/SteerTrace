@@ -82,7 +82,7 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
                       (paragraph(c["attribution_reason"], "attribution-reason") if c.get("attribution_reason") else '') +
                       ('<p class="inference">这是基于上下文的推测。</p>' if c["basis"] == "inference" else '') +
                       '<dl>' + ''.join(f'<div><dt>{label}</dt><dd>{h(c[field])}</dd></div>' for label, field in
-                                      (("具体问题", "problem"), ("潜在影响", "consequence"), ("思维强化方向", "better_move"))) +
+                                      (("具体问题", "problem"), ("潜在影响", "consequence"), ("更有依据的判断与具体意见", "better_move"))) +
                       '</dl>' + links(c["event_ids"]) + '</article>')
     criticism_html = ''.join(blocks) or paragraph("当前记录未呈现有充分依据的判断偏差。", "empty")
     strengths = review.get("keep_doing", [])
@@ -125,10 +125,10 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
                      '</div></details></div></article>')
     event_html = ''.join(cards) or paragraph("没有记录可支持的关键判断。这不说明你没有思考。", "empty")
     rec_html = ''.join(f'<article class="next-action"><span class="action-number">{i:02}</span><div><h3>{h(r["text"])}</h3>'
-                       '<h4>判断中的着力点</h4>' + paragraph(r["next_check"]) +
+                       '<h4>适用情境与具体意见</h4>' + paragraph(r["next_check"]) +
                        ('<h4>后续如何检验</h4>' + paragraph(r["verification_signal"]) if 'verification_signal' in r else '') +
                        links(r["event_ids"]) + '</div></article>'
-                       for i, r in enumerate(analysis["recommendations"], 1)) or paragraph("当前记录未呈现需要额外强化的方向。", "empty")
+                       for i, r in enumerate(analysis["recommendations"], 1)) or paragraph("本次未提出额外建议；这不表示所有判断或方案均已验证。", "empty")
     coverage_note = ("本次仅分析对话，未纳入项目文档。" if not documents else
                      f"本次分析对话及 {len(documents)} 份项目文档快照；文档记录不等于独立验证。")
     headline = review.get("headline", "回看你怎样推动了这次工作")
@@ -171,12 +171,12 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
 <section id="overview"><div class="section-heading"><span class="section-number">01</span><h2>先看结论</h2></div>
 <p class="coverage-note">{h(coverage_note)}</p>
 <div class="overview-grid"><div class="stat"><strong>{len(events)}</strong><span>个关键判断</span></div><div class="stat"><strong>{len(criticisms)}</strong><span>项待审视的问题</span></div><div class="stat"><strong>{len(analysis["recommendations"])}</strong><span>个强化方向</span></div></div>
-{('<h3>值得延续的思维</h3>' + strength_html) if strength_html else ''}</section>
+{('<h3>值得肯定的已有做法</h3>' + strength_html) if strength_html else ''}</section>
 <section id="criticism"><div class="section-heading"><span class="section-number">02</span><h2>判断与归因</h2></div>{criticism_html}</section>
 <section id="journey"><div class="section-heading"><span class="section-number">03</span><h2>回看判断过程</h2></div><p class="muted">按对话先后排列；时间统一显示为 UTC+8。缺失或异常时间保留原始顺序，先后不代表因果。</p>
 <div class="toolbar" id="filters" hidden><label for="search">查找内容<input id="search" type="search" placeholder="输入目标、判断或原话" autocomplete="off"></label>
 <div class="filter-buttons" role="group" aria-label="筛选判断"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="attention" aria-pressed="false">值得关注</button><button data-filter="choice" aria-pressed="false">取舍与选择</button></div></div>
 <p id="match-count" class="muted" aria-live="polite"></p><div class="timeline">{event_html}</div><p id="no-matches" class="empty" hidden>没有找到符合条件的判断，试试清空搜索或切换分类。</p></section>
-<section id="next"><div class="section-heading"><span class="section-number">04</span><h2>思维强化方向</h2></div>{rec_html}</section>
+<section id="next"><div class="section-heading"><span class="section-number">04</span><h2>有新增价值的建议</h2></div>{rec_html}</section>
 <footer><a class="brand" href="#top">SteerTrace</a><span class="footer-info"><span class="report-version">生成工具：SteerTrace v{h(__version__)}</span><span>看清判断依据，让下一次思考更清楚。</span></span><a href="#top">返回顶部 {icon("chevron-up")}</a></footer></div></main><script>{js}</script></body></html>'''
     return html, result

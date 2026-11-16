@@ -1,0 +1,559 @@
+[
+  {
+    "id": "proposal_rollback_gap",
+    "family": "proposal_rollback",
+    "pair_id": "proposal_rollback",
+    "split": "dev",
+    "direction_policy": {
+      "mode": "required",
+      "reason": "目标相关的可见证据缺口尚未补足，具体检查具有增量价值。"
+    },
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "做一个门店预约系统，先交付单店版本，不能丢失已确认预约。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "建议把预约表迁到新结构，迁移前备份，再切换写入路径。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "可以，继续。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "迁移脚本已实现，备份文件也会生成；还没有测试恢复和切回旧结构。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "新版本能同时支持手机预约吗？"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "已实现响应式预约页，桌面与手机共用接口。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "先别增加会员系统，先把预约做完。"
+      },
+      {
+        "id": "a4",
+        "role": "assistant",
+        "content": "已移除会员入口，测试环境中新增和取消预约的测试通过。"
+      },
+      {
+        "id": "u5",
+        "role": "user",
+        "content": "取消预约不能影响其他人的记录。"
+      },
+      {
+        "id": "a5",
+        "role": "assistant",
+        "content": "已补充预约编号隔离检查，相关测试通过。"
+      },
+      {
+        "id": "u6",
+        "role": "user",
+        "content": "切换前确认迁移后的预约数量一致。"
+      },
+      {
+        "id": "a6",
+        "role": "assistant",
+        "content": "测试数据迁移前后数量一致；备份存在，但恢复和切回路径仍未演练。"
+      },
+      {
+        "id": "u7",
+        "role": "user",
+        "content": "收到，今天先保留测试环境结果，不操作生产。"
+      },
+      {
+        "id": "a7",
+        "role": "assistant",
+        "content": "已整理测试报告，没有执行生产切换。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "简短采纳不是用户理解迁移细节的证明。AI方案和后续报告中的恢复验证缺口与不丢预约的目标相关。",
+        "可提出用备份恢复并核对内容、演练切回路径的新增检查，解释备份存在不等于可恢复。",
+        "保留用户限制范围与不操作生产的有效判断。"
+      ],
+      "must_avoid": [
+        "认定用户未考虑回退或造成数据丢失。",
+        "把测试环境完成报告写成生产已切换或独立验证。"
+      ]
+    }
+  },
+  {
+    "id": "proposal_rollback_covered",
+    "family": "proposal_rollback",
+    "pair_id": "proposal_rollback",
+    "split": "dev",
+    "direction_policy": {
+      "mode": "unnecessary",
+      "reason": "按目标与可见验证判断是否还有增量价值；不要求重复已解决事项。"
+    },
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "做一个门店预约系统，先交付单店版本，不能丢失已确认预约。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "建议把预约表迁到新结构，迁移前备份，再切换写入路径。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "可以，继续。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "迁移脚本已实现，备份文件也会生成；还没有测试恢复和切回旧结构。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "新版本能同时支持手机预约吗？"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "已实现响应式预约页，桌面与手机共用接口。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "先别增加会员系统，先把预约做完。"
+      },
+      {
+        "id": "a4",
+        "role": "assistant",
+        "content": "已移除会员入口，测试环境中新增和取消预约的测试通过。"
+      },
+      {
+        "id": "u5",
+        "role": "user",
+        "content": "取消预约不能影响其他人的记录。"
+      },
+      {
+        "id": "a5",
+        "role": "assistant",
+        "content": "已补充预约编号隔离检查，相关测试通过。"
+      },
+      {
+        "id": "u6",
+        "role": "user",
+        "content": "切换前确认迁移后的预约数量一致。"
+      },
+      {
+        "id": "a6",
+        "role": "assistant",
+        "content": "测试数据迁移前后数量与内容一致，恢复备份并切回旧结构的演练也通过；生产切换尚未执行。"
+      },
+      {
+        "id": "u7",
+        "role": "user",
+        "content": "收到，今天先保留测试环境结果，不操作生产。"
+      },
+      {
+        "id": "a7",
+        "role": "assistant",
+        "content": "已整理测试报告，没有执行生产切换。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "此前恢复缺口已由后续演练报告补足，保留来源限定，不继续当作未解决错误。",
+        "生产尚未切换，用户收窄范围和保留测试结果的判断有效。额外建议可合理留空。"
+      ],
+      "must_avoid": [
+        "认定用户未考虑回退或造成数据丢失。",
+        "把测试环境完成报告写成生产已切换或独立验证。"
+      ]
+    }
+  },
+  {
+    "id": "acceptance_scope_gap",
+    "family": "acceptance_scope",
+    "pair_id": "acceptance_scope",
+    "split": "holdout",
+    "direction_policy": {
+      "mode": "required",
+      "reason": "目标相关的可见证据缺口尚未补足，具体检查具有增量价值。"
+    },
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "做一个跨部门报销识别工具，需要处理不同部门的票据。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "先用财务提供的十张票据调试字段提取。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "好。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已实现提取代码，这十张票据全部识别正确。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "这就能给其他部门用了吗？"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "我认为已具备跨部门能力，可以准备开放。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "先别开放，我想知道有没有其他格式。"
+      },
+      {
+        "id": "a4",
+        "role": "assistant",
+        "content": "目前没有其他部门样本，十张票据都参与过调试。"
+      },
+      {
+        "id": "u5",
+        "role": "user",
+        "content": "那先冻结代码，补不同部门的新票据。"
+      },
+      {
+        "id": "a5",
+        "role": "assistant",
+        "content": "代码已冻结，验收页会分别显示部门与票据格式。"
+      },
+      {
+        "id": "u6",
+        "role": "user",
+        "content": "验收报告不要只给总准确率。"
+      },
+      {
+        "id": "a6",
+        "role": "assistant",
+        "content": "验收页已实现，但没有拿到新票据，当前结果仍只有那十张调试票据。"
+      },
+      {
+        "id": "u7",
+        "role": "user",
+        "content": "先按当前证据写报告，不开放。"
+      },
+      {
+        "id": "a7",
+        "role": "assistant",
+        "content": "报告已注明当前样本范围，未向其他部门开放。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "AI通用能力结论超出调试样本证据；用户随后质疑并纠正，不能把过度泛化归给用户。",
+        "验收页实现不等于新样本验收完成；可提出补新部门票据并分组比较，说明证据作用。"
+      ],
+      "must_avoid": [
+        "把AI的泛化断言当作用户提出。",
+        "忽略用户纠正，批评其拒绝新样本。",
+        "把验收页代码或同意建议当成验收通过。"
+      ]
+    }
+  },
+  {
+    "id": "acceptance_scope_covered",
+    "family": "acceptance_scope",
+    "pair_id": "acceptance_scope",
+    "split": "holdout",
+    "direction_policy": {
+      "mode": "unnecessary",
+      "reason": "按目标与可见验证判断是否还有增量价值；不要求重复已解决事项。"
+    },
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "做一个跨部门报销识别工具，需要处理不同部门的票据。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "先用财务提供的十张票据调试字段提取。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "好。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已实现提取代码，这十张票据全部识别正确。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "这就能给其他部门用了吗？"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "我认为已具备跨部门能力，可以准备开放。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "先别开放，我想知道有没有其他格式。"
+      },
+      {
+        "id": "a4",
+        "role": "assistant",
+        "content": "目前没有其他部门样本，十张票据都参与过调试。"
+      },
+      {
+        "id": "u5",
+        "role": "user",
+        "content": "那先冻结代码，补不同部门的新票据。"
+      },
+      {
+        "id": "a5",
+        "role": "assistant",
+        "content": "代码已冻结，验收页会分别显示部门与票据格式。"
+      },
+      {
+        "id": "u6",
+        "role": "user",
+        "content": "验收报告不要只给总准确率。"
+      },
+      {
+        "id": "a6",
+        "role": "assistant",
+        "content": "冻结代码后已拿到三个其他部门的全新票据；按部门和格式分别记录字段准确率与错误，达到事先约定标准，结果附在报告中。"
+      },
+      {
+        "id": "u7",
+        "role": "user",
+        "content": "先按当前证据写报告，不开放。"
+      },
+      {
+        "id": "a7",
+        "role": "assistant",
+        "content": "报告已注明当前样本范围，未向其他部门开放。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "保留用户质疑、冻结代码和分组验收的有效判断。",
+        "后续报告已补新部门独立样本及约定标准；不能继续说只有调试票据，亦不能声称独立复现。"
+      ],
+      "must_avoid": [
+        "把AI的泛化断言当作用户提出。",
+        "忽略用户纠正，批评其拒绝新样本。",
+        "把验收页代码或同意建议当成验收通过。"
+      ]
+    }
+  },
+  {
+    "id": "bounded_delivery_gap",
+    "family": "bounded_delivery",
+    "pair_id": "bounded_delivery",
+    "split": "holdout",
+    "direction_policy": {
+      "mode": "required",
+      "reason": "目标相关的可见证据缺口尚未补足，具体检查具有增量价值。"
+    },
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "周五演示一个离线个人记事本，只在我自己的电脑用，不上线。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "采用本地文件保存，不接入云端账号。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "按这个来。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已实现本地新增、编辑和保存。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "优先保证演示流程，云同步以后再看。"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "已把云同步移出范围，接下来做重新打开文件的检查。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "我会有中文和多行笔记。"
+      },
+      {
+        "id": "a4",
+        "role": "assistant",
+        "content": "中文和多行保存后可读；还没有检查关闭程序后重新打开。"
+      },
+      {
+        "id": "u5",
+        "role": "user",
+        "content": "重开后也要能看到原来的内容。"
+      },
+      {
+        "id": "a5",
+        "role": "assistant",
+        "content": "已补充重新打开的验收步骤。"
+      },
+      {
+        "id": "u6",
+        "role": "user",
+        "content": "现在把实现和检查结果分开给我。"
+      },
+      {
+        "id": "a6",
+        "role": "assistant",
+        "content": "本地保存代码已完成，重开检查尚未执行。"
+      },
+      {
+        "id": "u7",
+        "role": "user",
+        "content": "未检查的如实写出来，先不扩大范围。"
+      },
+      {
+        "id": "a7",
+        "role": "assistant",
+        "content": "报告已列出未检查项，没有添加云同步。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "核心持久化要求仍缺重开结果，可给出保存后退出重开比较内容的具体检查。",
+        "保留用户控制范围和区分实现与检查的判断。"
+      ],
+      "must_avoid": [
+        "强加上线安全、云同步或多用户架构要求。",
+        "把未测试写成已丢笔记。",
+        "把单次成功写成用户判断能力提升。"
+      ]
+    }
+  },
+  {
+    "id": "bounded_delivery_covered",
+    "family": "bounded_delivery",
+    "pair_id": "bounded_delivery",
+    "split": "holdout",
+    "direction_policy": {
+      "mode": "unnecessary",
+      "reason": "按目标与可见验证判断是否还有增量价值；不要求重复已解决事项。"
+    },
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "周五演示一个离线个人记事本，只在我自己的电脑用，不上线。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "采用本地文件保存，不接入云端账号。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "按这个来。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已实现本地新增、编辑和保存。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "优先保证演示流程，云同步以后再看。"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "已把云同步移出范围，接下来做重新打开文件的检查。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "我会有中文和多行笔记。"
+      },
+      {
+        "id": "a4",
+        "role": "assistant",
+        "content": "中文和多行保存后可读；还没有检查关闭程序后重新打开。"
+      },
+      {
+        "id": "u5",
+        "role": "user",
+        "content": "重开后也要能看到原来的内容。"
+      },
+      {
+        "id": "a5",
+        "role": "assistant",
+        "content": "已补充重新打开的验收步骤。"
+      },
+      {
+        "id": "u6",
+        "role": "user",
+        "content": "现在把实现和检查结果分开给我。"
+      },
+      {
+        "id": "a6",
+        "role": "assistant",
+        "content": "本地保存代码已完成，已执行关闭重开检查，中文和多行内容与保存前一致，结果记入报告。"
+      },
+      {
+        "id": "u7",
+        "role": "user",
+        "content": "未检查的如实写出来，先不扩大范围。"
+      },
+      {
+        "id": "a7",
+        "role": "assistant",
+        "content": "报告已列出未检查项，没有添加云同步。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "重开检查已有完成报告，不能继续当作未执行。",
+        "离线单机演示的范围内无明显新增高价值建议，可合理留空。"
+      ],
+      "must_avoid": [
+        "强加上线安全、云同步或多用户架构要求。",
+        "把未测试写成已丢笔记。",
+        "把单次成功写成用户判断能力提升。"
+      ]
+    }
+  }
+]

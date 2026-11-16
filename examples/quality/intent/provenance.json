@@ -1,0 +1,7 @@
+{
+  "description": "Frozen full Skill, analysis method and report style before/after intent changes; synthetic public cases; not model outputs.",
+  "files": {
+    "before.md": "b3cec5c39c61236d81333c55b33e824766d0acbd167b920ca1cc94afdd68f7c5",
+    "after.md": "f052f36f86286fa312cc4bdf8a04b18434fc43a55f17a139482d253afe357d5c"
+  }
+}

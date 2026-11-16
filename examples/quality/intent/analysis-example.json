@@ -1,0 +1,74 @@
+{
+  "schema_version": "steertrace.events/v1",
+  "run_id": "REPLACE_WITH_PREPARED_RUN_ID",
+  "events": [
+    {
+      "id": "E1",
+      "kind": "authorization",
+      "summary": "采纳迁移方案时，恢复能力仍缺少验证",
+      "ownership": "authorization_only",
+      "evidence_posture": "observed_submission",
+      "user_evidence": [
+        {
+          "message_id": "u2",
+          "quote": "可以，继续。"
+        }
+      ],
+      "before": [
+        {
+          "message_id": "a1",
+          "quote": "建议把预约表迁到新结构，迁移前备份，再切换写入路径。"
+        }
+      ],
+      "after": [
+        {
+          "message_id": "a2",
+          "quote": "迁移脚本已实现，备份文件也会生成；还没有测试恢复和切回旧结构。"
+        },
+        {
+          "message_id": "a6",
+          "quote": "测试数据迁移前后数量一致；备份存在，但恢复和切回路径仍未演练。"
+        }
+      ],
+      "interpretation": "你同意继续，不能据此判断你理解或提出了全部迁移细节。AI随后报告备份存在，但恢复与切回仍未演练；这与不能丢失已确认预约的目标有关。报告中测试数据数量一致，仍不能替代恢复验证。用户后来明确不操作生产，记录不支持已发生数据丢失。",
+      "uncertainty": "没有记录不代表用户没考虑；新增演练建议不证明曾发生迁移事故。完成报告未独立复现。",
+      "ai_response": "AI报告迁移脚本已实现、备份存在，测试数量一致，但恢复和切回尚未演练。",
+      "document_links": []
+    }
+  ],
+  "review": {
+    "headline": "范围控制有效，备份可恢复性仍待确认",
+    "summary": "你将功能收窄到单店预约并明确暂不操作生产。AI方案与后续报告尚未补足恢复验证，备份存在还不足以支持可恢复的判断。",
+    "keep_doing": [
+      "把新增功能和生产操作限制在当前目标内。"
+    ]
+  },
+  "criticisms": [
+    {
+      "event_ids": [
+        "E1"
+      ],
+      "basis": "observed_instance",
+      "title": "AI迁移方案的恢复验证尚不完整",
+      "problem": "AI报告中恢复备份和切回路径仍未演练。",
+      "consequence": "若后续直接据此切换，恢复不可用可能增加已确认预约的保护风险；当前未观察到损失。",
+      "better_move": "复盘新增检查：可用备份在测试环境恢复，核对预约内容，并演练切回旧结构；这能补充备份存在之外的恢复依据。",
+      "attribution": "ai",
+      "attribution_reason": "AI提案包含备份和切换，后续明确报告恢复未演练；用户的简短授权不证明其未考虑风险。"
+    }
+  ],
+  "recommendations": [
+    {
+      "event_ids": [
+        "E1"
+      ],
+      "text": "区分备份存在与恢复可用",
+      "next_check": "在迁移验收节点，可以追问：备份实际恢复过吗？恢复后的预约内容是否一致，旧结构能否重新承接写入？这是复盘新增的检查建议，用于补充恢复依据，不代表你从未考虑这些问题。",
+      "status": "hypothesis",
+      "verification_signal": "相近迁移中，若切换判断明确参考恢复与切回演练结果，可支持此方向；若系统已有覆盖相同路径的可靠演练证据，重复检查的增量价值降低。单次无故障不能证明思维改善。"
+    }
+  ],
+  "limitations": [
+    "人工编写的结构与表达示例，不是模型独立评测或真实迁移结果。"
+  ]
+}

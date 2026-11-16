@@ -8,8 +8,10 @@
 
 ## Overview
 
-SteerTrace examines how you frame problems, evaluate AI suggestions, make tradeoffs,
-and explain unexpected results. It connects those judgments to conversation evidence,
+SteerTrace reviews your collaboration with AI from idea to delivery, especially how
+you accept, question, and adjust its advice. It examines the AI proposals and reported
+implementations behind those choices, surfaces consequential omissions, and offers
+concrete, evidence-grounded advice. It connects those judgments to conversation evidence,
 reveals gaps between assumptions and conclusions, and identifies reasoning worth
 preserving or strengthening.
 
