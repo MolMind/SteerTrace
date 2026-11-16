@@ -2,6 +2,8 @@
 
 ## 0.2.0
 
+- Automatically tag and publish tested default-branch updates; safely skip exact release reruns.
+
 - Display the generator version in the HTML footer and metadata; verify it against the CLI on installation.
 
 - Add a single version source, release policy, Agent publishing rules and tag-based Release assets.

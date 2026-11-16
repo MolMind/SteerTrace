@@ -31,14 +31,20 @@ python3 scripts/release.py --bump patch --reason "修复说明；旧版仍受支
 1. 核对改动范围、私密材料排除、版本、CHANGELOG 和升级政策。
 2. 执行 `python3 scripts/release.py --check`、完整单元测试及 `scripts/demo.py`，
    在隔离环境执行 `scripts/check_install.py`，核对生成 HTML 的页脚及 generator 版本与 CLI 一致。不声称结构测试证明语义分析正确。
-3. 提交并推送开发分支；通过项目正常合并流程进入默认分支。不要绕过分支保护、强推或自动合并。
-4. 执行 `python3 scripts/release.py --check-remote`，确认版本高于已发布稳定版且最低支持版本未降低。
-   确认发布提交已进入默认分支、远端 CI 成功，然后创建并推送对应 `vX.Y.Z` tag。
-   只创建尚未存在的 tag，不移动已发布 tag；失败修复后使用新版本。
-5. tag 触发 GitHub Actions；所有测试和跨平台安装检查通过后，构建源代码 ZIP 与
-   `steertrace-update.json`，包含版本、最低支持版本、原因、源提交及 ZIP 的 SHA-256。
-   CI 一次性上传两份文件并创建正式 GitHub Release；不将草稿或预发布标为稳定更新。
-6. 核实 Release 及两个附件可读，版本检查返回该版本，再报告发布结果。
+3. 提交并推送开发分支；通过项目正常合并流程进入默认分支。不要绕过分支保护或强推；只有用户明确要求合并时才执行合并。
+4. 默认分支 push 自动运行测试及 macOS/Windows 安装检查；成功后发布 job 检查远端版本与
+   最低支持版本，自动创建并推送 `vX.Y.Z` tag，在同一个 job 构建并发布正式 Release。
+   不需要手动创建 Release 或额外 PAT；使用该 job 的 `GITHUB_TOKEN`，写权限仅限发布 job。
+5. tag push 及默认分支的手动 workflow_dispatch 也可重试。全局发布锁避免并发；同一版本和
+   同一提交已发布则跳过，版本相同而提交不同则失败并要求准备新版本。禁止移动已有 tag、
+   覆盖 Release 附件或把旧版本替换为最新版。断网和非首次发布的缺附件错误不能当作首次发布。
+6. 发布附件包括源代码 ZIP 和 `steertrace-update.json`，包含版本、最低支持版本、原因、
+   源提交及 ZIP 的 SHA-256。核实 Release、两个附件和版本检查结果后，再报告发布成功。
+
+CI 调用 `scripts/publish_release.py`。GitHub 内置 token 推送 tag 不会再触发新的 push
+工作流，因此创建 tag、构建和发布在同一 job 内完成，不依赖另一个 tag 工作流接力。
+用户要求合并并发布时，Agent 应跟进远端 CI 至成功、失败或需要用户处理，不能将推送完成
+称为正式发布完成。版本已经准备且尚未发布时沿用该版本，不为合并动作重复升版。
 
 `python3 scripts/release.py --build <新目录>` 只从干净、已提交且有匹配 tag 的源码构建，
 不会提交、推送或发布。输出目录应在仓库外或忽略目录中。tag 发布失败时先核对远端结果，
