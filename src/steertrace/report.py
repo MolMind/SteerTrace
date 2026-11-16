@@ -93,7 +93,9 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
                      '</div></details></div></article>')
     event_html = ''.join(cards) or paragraph("没有记录可支持的关键判断。这不说明你没有思考。", "empty")
     rec_html = ''.join(f'<article class="next-action"><span class="action-number">{i:02}</span><div><h3>{h(r["text"])}</h3>'
-                       '<h4>判断中的着力点</h4>' + paragraph(r["next_check"]) + links(r["event_ids"]) + '</div></article>'
+                       '<h4>判断中的着力点</h4>' + paragraph(r["next_check"]) +
+                       ('<h4>后续如何检验</h4>' + paragraph(r["verification_signal"]) if 'verification_signal' in r else '') +
+                       links(r["event_ids"]) + '</div></article>'
                        for i, r in enumerate(analysis["recommendations"], 1)) or paragraph("当前记录未呈现需要额外强化的方向。", "empty")
     headline = review.get("headline", "回看你怎样推动了这次工作")
     summary = review.get("summary", "从你提出的要求、作出的选择和 AI 的回应，回看这次合作里值得保留和需要调整的做法。")
@@ -132,7 +134,7 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
 <div class="guide-bottom"><span>阅读方法 · 非本次分析结论</span><span id="guide-count">01 / 03</span></div></div></div></div></section>
 <div class="report-content">
 <section id="overview"><div class="section-heading"><span class="section-number">01</span><h2>先看结论</h2></div>
-<div class="overview-grid"><div class="stat"><strong>{len(events)}</strong><span>个关键判断</span></div><div class="stat"><strong>{len(criticisms)}</strong><span>处关键偏差</span></div><div class="stat"><strong>{len(analysis["recommendations"])}</strong><span>个强化方向</span></div></div>
+<div class="overview-grid"><div class="stat"><strong>{len(events)}</strong><span>个关键判断</span></div><div class="stat"><strong>{len(criticisms)}</strong><span>项待审视的判断</span></div><div class="stat"><strong>{len(analysis["recommendations"])}</strong><span>个强化方向</span></div></div>
 {('<h3>值得延续的思维</h3>' + strength_html) if strength_html else ''}</section>
 <section id="criticism"><div class="section-heading"><span class="section-number">02</span><h2>判断与归因</h2></div>{criticism_html}</section>
 <section id="journey"><div class="section-heading"><span class="section-number">03</span><h2>回看判断过程</h2></div><p class="muted">按对话先后排列，顺序不代表前一句一定导致了后面的变化。</p>

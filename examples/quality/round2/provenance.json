@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-14",
+  "scope": "core analysis only, shared JSON contract",
+  "before": "frozen first-round core instructions; never regenerated from updated skill",
+  "files": {
+    "skills/steer-trace/SKILL.md": "19da2c868854c272e7016b1c92aa8a79a63ae29cadad1ba673309cfa1a0f131f",
+    "skills/steer-trace/references/analysis-method.md": "a37749e88f19594d69aa235a33204edb05308e269faa3faa20669709aa3ddd42",
+    "skills/steer-trace/references/report-style.md": "56f82bc8a0519e05552368014d49dde2e102fb9466840e0791a2b62a02978008",
+    "examples/quality/round2/comparators/before.md": "2821d6da2486e6ad2767337fa59b32671021f567c43b72135fa1b2658ba628c6",
+    "examples/quality/round2/comparators/after.md": "05be0082eaae52570532a6a9d3da0b332e171734a193b3da3cc6aab9c9250418",
+    "examples/quality/round2/comparators/generic.md": "48596aa710acf3b04c640cbd2043f378b2b9ce7aa134442ea578fcbe99df0776"
+  }
+}

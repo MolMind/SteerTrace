@@ -36,6 +36,10 @@ the workflow and delivers the report using these rules:
 3. **Invocation excluded:** the triggering message and everything after it stay out of the analysis.
 4. **Ask only when access is unavailable:** never guess another chat or reconstruct dialogue from summaries.
 
+Analysis reconstructs the information and constraints available at decision time, separates
+decision quality from execution and outcomes, and compares possible error explanations.
+Directions include context and observable future checks; their effectiveness remains unverified.
+
 ## What you get
 
 - **Judgment evidence:** how goals, assumptions, and choices connect.

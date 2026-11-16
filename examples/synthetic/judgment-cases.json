@@ -1,0 +1,7 @@
+[
+  {"id":"reasonable_failure","messages":[{"id":"u1","role":"user","content":"现有压测中 A 和 B 都达标，A 成本更低，先选 A；若错误率超过 1% 就回退。"},{"id":"a1","role":"assistant","content":"切换后供应商突发故障，错误率 5%。"},{"id":"u2","role":"user","content":"按阈值回退。故障原因还没查明。"}]},
+  {"id":"unsupported_success","messages":[{"id":"u1","role":"user","content":"没有测试，但我觉得 A 一定更快，所有流量直接切过去。"},{"id":"a1","role":"assistant","content":"切换后今天的平均耗时下降了，今天的流量也小了一半。"}]},
+  {"id":"execution_error","messages":[{"id":"u1","role":"user","content":"只改测试环境，生产配置不要动。"},{"id":"a1","role":"assistant","content":"我误改了生产配置，已回滚。"}]},
+  {"id":"effective_correction","messages":[{"id":"u1","role":"user","content":"这三张图正确就说明有通用能力。"},{"id":"a1","role":"assistant","content":"它们都是已见图片，不能说明跨场景表现。"},{"id":"u2","role":"user","content":"这个结论确实过早。先冻结方案，再用独立应用的新图片验收，未通过就收窄能力范围。"}]},
+  {"id":"unresolved_cause","messages":[{"id":"u1","role":"user","content":"用新配置做对照，输入规模和运行环境保持一致。"},{"id":"a1","role":"assistant","content":"耗时增加了，但运行中输入翻倍，共享机器也有其他任务；还没有做隔离复测。"},{"id":"u2","role":"user","content":"先记录现象，暂不确定是配置、输入还是机器负载造成的。"}]}
+]

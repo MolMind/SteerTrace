@@ -179,6 +179,10 @@ def validate(run: Path, events: dict) -> dict:
             continue
         for field in ("text", "next_check"):
             required_text(rec, field, "recommendation")
+        if "verification_signal" in rec:
+            required_text(rec, "verification_signal", "recommendation")
+        else:
+            warnings.append("Legacy recommendation has no verification_signal; effectiveness remains untested.")
         if rec.get("status") != "hypothesis":
             error("Recommendation effectiveness must remain a hypothesis.")
         refs = rec.get("event_ids")

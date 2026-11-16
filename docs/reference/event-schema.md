@@ -5,6 +5,18 @@ not semantic truth. Start from the run's `events.template.json`. Read every evid
 packet, including late constraints and outcomes. Output one JSON object without
 Markdown fences. Empty events/recommendations are valid.
 
+## Analysis method
+
+Before authoring findings, apply the [judgment analysis method](../../skills/steer-trace/references/analysis-method.md).
+Reconstruct the problem and information available at the decision time; compare recorded
+alternatives; separate decision quality, execution, and outcome; compare causal explanations.
+Use the existing interpretation and uncertainty fields for relevant analysis, not a compulsory
+checklist in every event. Semantically review main findings and directions before CLI validation.
+Missing reasoning stays unknown; exact quotes alone do not establish adequate support.
+Check the action status of consequential claims and the units, purpose and scope of numeric
+criteria. Requests are not completed actions; rollback triggers are not automatically acceptance
+thresholds. Preserve source qualifications in the claim itself. These checks use existing fields.
+
 ## Root fields
 
 | Field | Requirement |
@@ -69,10 +81,20 @@ association is supported, leave the list empty and describe the limitation.
   "event_ids": ["E1"],
   "text": "Anchor latency comparisons in consistent measurement boundaries.",
   "next_check": "When comparing options, agreed timing boundaries make the latency evidence comparable.",
+  "verification_signal": "In a comparable new task, a conclusion tied to agreed timing boundaries would support this direction; if a different bottleneck dominates, its applicability needs revision.",
   "status": "hypothesis"
 }
 ```
 
+New recommendations include non-empty `verification_signal`: an observable change in a
+comparable future decision and evidence that would weaken or limit the direction.
+`next_check` describes context and value; `verification_signal` makes effectiveness testable.
+Agreement, adoption, and one successful outcome do not establish improvement. Older v1
+recommendations without the field remain valid with a warning; a supplied empty or non-text
+field is invalid. The validator cannot assess whether the signal is meaningful.
+
+Prioritize by evidence strength, decision impact, and future reuse value without scoring people.
+Directions can extend effective practices as well as address errors.
 Describe a concrete reasoning direction and its value at an actual decision point. Do not add a suggestion
 just to fill a quota. Do not infer stable personal traits from a single session.
 

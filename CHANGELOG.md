@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+- Check action status and numeric criterion purpose/scope before consequential claims;
+  distinguish requests from execution and rollback triggers from acceptance standards.
+- Freeze direction applicability and anonymized task mappings before evaluation,
+  support repeated paired comparisons, and report omissions separately from appropriate empty directions.
+- Add twelve new sixteen-message cases with six strict single-message evidence pairs
+  for before/after/generic repeated evaluation.
+
+- Add 24 synthetic output-quality cases across eight families with eight minimal
+  evidence pairs, family-separated dev/holdout groups, and seven quality dimensions.
+- Add offline preparation, anonymized review and paired quality summaries for generic
+  review, current core instructions and a pinned MIT session-review adaptation.
+  Keep subjective semantic ratings separate from structural test results.
+
+- Add decision-time evidence reconstruction, alternative-cause comparison, and semantic
+  review checkpoints to the Skill and generated analysis instructions.
+- Add observable verification signals to new directions, preserving legacy v1 analyses
+  with a warning; display signals and avoid counting inferred criticisms as proven errors.
+- Add synthetic judgment regression cases and manual semantic review criteria.
+
 - Simplify the READMEs around thinking-strengthening value and agent-managed setup;
   group installation, client integration, reference, and development docs by purpose.
 

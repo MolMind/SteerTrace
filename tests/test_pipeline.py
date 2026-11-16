@@ -86,6 +86,40 @@ class PipelineTests(unittest.TestCase):
         self.events["recommendations"][0]["status"] = "proven"
         self.assert_invalid(self.events, "hypothesis")
 
+    def test_verification_signal_is_validated_and_rendered(self):
+        signal = self.events["recommendations"][0]["verification_signal"]
+        text, checked = render(self.run, self.events)
+        self.assertTrue(checked["valid"])
+        self.assertIn(signal, text)
+        self.assertIn("后续如何检验", text)
+        for invalid in ("", "  ", None, [], 42):
+            with self.subTest(value=invalid):
+                self.events["recommendations"][0]["verification_signal"] = invalid
+                self.assert_invalid(self.events, "verification_signal")
+
+    def test_verification_signal_is_escaped(self):
+        self.events["recommendations"][0]["verification_signal"] = '<script>alert("signal")</script>'
+        text, checked = render(self.run, self.events)
+        self.assertTrue(checked["valid"])
+        self.assertNotIn('<script>alert("signal")</script>', text)
+        self.assertIn("&lt;script&gt;", text)
+
+    def test_legacy_recommendations_remain_readable_with_warning(self):
+        for rec in self.events["recommendations"]:
+            rec.pop("verification_signal", None)
+        text, checked = render(self.run, self.events)
+        self.assertTrue(checked["valid"])
+        self.assertTrue(any("verification_signal" in w for w in checked["warnings"]))
+        self.assertNotIn("后续如何检验", text)
+
+    def test_inferred_criticism_is_not_counted_as_proven_error(self):
+        self.events["criticisms"][0]["basis"] = "inference"
+        text, checked = render(self.run, self.events)
+        self.assertTrue(checked["valid"])
+        self.assertIn("项待审视的判断", text)
+        self.assertNotIn("处关键偏差", text)
+        self.assertIn("这是基于上下文的推测", text)
+
     def test_unknown_event_reference_is_rejected(self):
         self.events["recommendations"][0]["event_ids"] = ["missing"]
         self.assert_invalid(self.events, "existing event")

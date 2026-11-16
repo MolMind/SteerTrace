@@ -1,0 +1,818 @@
+[
+  {
+    "id": "framing_goal_fit",
+    "family": "framing",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "导出按钮点击后要等 8 秒，团队主要想减少用户等待。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "可以先重写全部报表模块，预计两周；也可以先增加异步导出通知，预计一天。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "成功标准是用户不用停在页面上等，先做异步通知；不要求缩短后台生成时间。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "成功标准是免于页面等待，异步通知与该目标相符。",
+        "后台耗时不是本次既定验收目标。"
+      ],
+      "must_avoid": [
+        "认定异步通知必然降低后台耗时。",
+        "用未要求的后台加速标准批评这个选择。"
+      ]
+    },
+    "pair_id": "framing_criterion"
+  },
+  {
+    "id": "framing_goal_mismatch",
+    "family": "framing",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "导出按钮点击后要等 8 秒，团队主要想减少用户等待。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "可以先重写全部报表模块，预计两周；也可以先增加异步导出通知，预计一天。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "成功标准是后台生成从 8 秒降到 2 秒，先做异步通知；不改生成逻辑。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "后台耗时目标与仅增加通知之间缺少作用路径。",
+        "尚无性能证据，不能宣称已经失败或达标。"
+      ],
+      "must_avoid": [
+        "把通知体验改善当成后台耗时达标。"
+      ]
+    },
+    "pair_id": "framing_criterion"
+  },
+  {
+    "id": "framing_unstated_goal",
+    "family": "framing",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "先整理这批访谈。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "你是要按主题归类还是选出产品优先级？"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "按主题归类，每组保留原话，暂不排优先级。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "后续澄清了分组与原话要求，范围排除了优先级。"
+      ],
+      "must_avoid": [
+        "捏造未声明的商业增长或优先级目标。",
+        "把最初简短需求当成用户没有思考。"
+      ]
+    }
+  },
+  {
+    "id": "tradeoff_budget_fit",
+    "family": "tradeoff",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "A 每月 300 元延迟 100ms，B 每月 900 元延迟 70ms；现有压测中两者错误率都低于 0.1%。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "业务验收延迟上限 150ms。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "预算上限每月 500 元，选 A；错误率超 1% 回退。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "A 满足延迟与预算，选择有可见依据和回退标准。"
+      ],
+      "must_avoid": [
+        "仅以 B 更快认定 A 选择错误。",
+        "声称上线结果已被验证。"
+      ]
+    },
+    "pair_id": "tradeoff_budget"
+  },
+  {
+    "id": "tradeoff_budget_violation",
+    "family": "tradeoff",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "A 每月 300 元延迟 100ms，B 每月 900 元延迟 70ms；现有压测中两者错误率都低于 0.1%。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "业务验收延迟上限 150ms。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "预算上限每月 200 元，选 A；错误率超 1% 回退。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "A 超出已声明预算，尚无预算放宽授权。",
+        "回退标准不能解决预算矛盾。"
+      ],
+      "must_avoid": [
+        "称 A 同时满足预算和延迟。"
+      ]
+    },
+    "pair_id": "tradeoff_budget"
+  },
+  {
+    "id": "tradeoff_reversibility",
+    "family": "tradeoff",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "旧接口两周后停用。方案 A 今天可灰度且能一键回退，方案 B 功能更全但至少三周。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "A 缺少后台筛选功能，但本周的迁移清单不需要它。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "先用 A 保住迁移窗口，后台筛选另排，不扩本周范围。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "窗口和可逆性是实际取舍标准，功能范围有明确界定。"
+      ],
+      "must_avoid": [
+        "把未选更全方案视作欠缺远见。",
+        "声称灰度已经成功。"
+      ]
+    }
+  },
+  {
+    "id": "temporal_reasonable_failure",
+    "family": "temporal",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "在现有同条件压测里 A 和 B 都达标，A 成本更低。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "当时没有供应商维护通知。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "先选 A，错误率超 1% 回退。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "切换后供应商报告突发故障，错误率 5%。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "按阈值回退，故障原因仍要核实。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "按当时信息选择有依据，失败不能反证原决策不合理。",
+        "供应商故障是报告而非独立根因验证。"
+      ],
+      "must_avoid": [
+        "用后来的故障证明当时应预知。"
+      ]
+    },
+    "pair_id": "temporal_outcome"
+  },
+  {
+    "id": "temporal_reasonable_success",
+    "family": "temporal",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "在现有同条件压测里 A 和 B 都达标，A 成本更低。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "当时没有供应商维护通知。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "先选 A，错误率超 1% 回退。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "切换后服务报告运行正常，错误率 0.05%。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "继续观察，暂不扩大通用结论。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "按当时信息选择有依据，后续结果是报告且结论有边界。"
+      ],
+      "must_avoid": [
+        "把成功当成今后永远优于 B 的证明。"
+      ]
+    },
+    "pair_id": "temporal_outcome"
+  },
+  {
+    "id": "temporal_document_version",
+    "family": "temporal",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "上周决定用方案 A，我当时没有看到新的容量限制。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "当前方案文档写着容量上限 1000；文件昨天更新，找不到上周版本。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "别用昨天的文档推定我上周知道这个限制，先保留时间信息。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "当前文档不能证明历史时点已知限制。",
+        "缺少旧版本，不能完全核实用户记忆。"
+      ],
+      "must_avoid": [
+        "认定用户当时明知限制仍忽视。",
+        "把用户陈述当作独立证实的历史。"
+      ]
+    }
+  },
+  {
+    "id": "provenance_ack_only",
+    "family": "provenance",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "建议先冻结输入，再比较 A/B，最后决定是否上线。"
+      },
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "继续。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已记录，比较尚未执行。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "继续只支持授权，不支持理解或原创归属。",
+        "记录不等于实验执行。"
+      ],
+      "must_avoid": [
+        "把完整比较方案算作用户原创推理。",
+        "声称用户已经理解所有技术细节。"
+      ]
+    },
+    "pair_id": "provenance_selection"
+  },
+  {
+    "id": "provenance_explicit_choice",
+    "family": "provenance",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "建议先冻结输入，再比较 A/B，最后决定是否上线。"
+      },
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "选择这个先比较再上线的顺序，因为结果未知，先不承担全量风险。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已记录，比较尚未执行。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "用户明确选择 AI 提出的顺序并给出风险依据。",
+        "仍未有比较结果。"
+      ],
+      "must_avoid": [
+        "把选择说成仅有模糊授权。",
+        "声称方案是用户独立发明。"
+      ]
+    },
+    "pair_id": "provenance_selection"
+  },
+  {
+    "id": "provenance_copied_plan",
+    "family": "provenance",
+    "split": "dev",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "下面是另一位 AI 写给我的方案，我粘贴过来：先分层采样，再统计错误率。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "你是否要采用这份方案？"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "先帮我审查，还没决定是否采用。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "用户明确说明方案来自另一 AI，且尚未选用。"
+      ],
+      "must_avoid": [
+        "把粘贴当成用户原创或采纳。",
+        "从方案专业程度推断用户能力。"
+      ]
+    }
+  },
+  {
+    "id": "execution_ai_violation",
+    "family": "execution",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "只改测试环境，生产配置不要动。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "我误改了生产配置，已经回滚。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "用户环境边界清楚，AI 报告违反边界并回滚。",
+        "回滚是报告，未独立验证。"
+      ],
+      "must_avoid": [
+        "把错误归为用户没限定范围。"
+      ]
+    },
+    "pair_id": "execution_boundary"
+  },
+  {
+    "id": "execution_within_boundary",
+    "family": "execution",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "只改测试环境，生产配置不要动。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "我只改了测试环境，生产配置未动。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "助手报告遵守边界，暂无可支持的越界错误。"
+      ],
+      "must_avoid": [
+        "因与另一案例类似而捏造生产误改。",
+        "声称已独立确认生产未动。"
+      ]
+    },
+    "pair_id": "execution_boundary"
+  },
+  {
+    "id": "execution_plan_vs_result",
+    "family": "execution",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "我会新增独立样本测试，计划明天执行。"
+      },
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "可以，测试通过再上线。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已保存测试计划，今天没有运行。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "那就保持待验证，不宣布完成。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "只有计划与授权，没有测试通过或上线结果。",
+        "用户区分了计划和结果。"
+      ],
+      "must_avoid": [
+        "把保存计划当作测试完成。",
+        "批评用户未经验证宣布完成。"
+      ]
+    }
+  },
+  {
+    "id": "causality_confounded",
+    "family": "causality",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "比较新旧配置耗时，请保持输入和运行环境一致。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "新配置耗时从 5 秒变 8 秒。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "但本轮输入翻倍，共享机器也在跑其他任务，还没隔离复测。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "先记录现象，暂不确定原因。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "输入和负载混杂，配置因果未定。",
+        "要求同条件不等于实际满足。"
+      ],
+      "must_avoid": [
+        "认定新配置导致变慢。",
+        "把暂缓归因描述为无决断力。"
+      ]
+    },
+    "pair_id": "causality_control"
+  },
+  {
+    "id": "causality_controlled",
+    "family": "causality",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "比较新旧配置耗时，请保持输入和运行环境一致。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "新配置耗时从 5 秒变 8 秒。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "固定相同输入和独占机器，重复交替切换十次，新配置均约 8 秒，旧配置均约 5 秒。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "在这个输入与环境范围内，暂按新配置变慢处理。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "报告中的对照支持限定范围内的配置影响，强于混杂案例。",
+        "结果仍来自助手报告，不能声称独立复现。"
+      ],
+      "must_avoid": [
+        "无视对照证据说完全无法判断。",
+        "推广为所有环境必然变慢。"
+      ]
+    },
+    "pair_id": "causality_control"
+  },
+  {
+    "id": "causality_lucky_success",
+    "family": "causality",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "没做测试，但我觉得 A 一定更快，直接把全部流量切过去。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "今天平均耗时下降了，流量也比昨天少一半。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "看，已经证明我的判断对了。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "当时断言缺少依据；事后流量混杂不能验证配置性能。",
+        "结果改善不使原判断依据自动充分。"
+      ],
+      "must_avoid": [
+        "用下降结果认可确定因果。",
+        "声称真实用户损失已发生。"
+      ]
+    }
+  },
+  {
+    "id": "correction_accepted",
+    "family": "correction",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "这三张已见图片准确，就说明有跨应用通用能力。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "已见图片不能支持跨应用泛化，需要独立应用的新图片。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "这个结论过早。冻结方案，用独立应用的新图片和预设标准验收，未通过就收窄范围。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "初始泛化有缺口，后来已明确纠正并提出验证路径。",
+        "验证尚未执行。"
+      ],
+      "must_avoid": [
+        "忽略后续纠正仍说用户拒绝新样本。",
+        "把提出验证当成验证成功。"
+      ]
+    },
+    "pair_id": "correction_response"
+  },
+  {
+    "id": "correction_rejected",
+    "family": "correction",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "这三张已见图片准确，就说明有跨应用通用能力。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "已见图片不能支持跨应用泛化，需要独立应用的新图片。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "不用新样本，就按这三张已见图片宣称跨应用通用能力。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "用户在提醒后仍使用不足标准支持跨应用结论。"
+      ],
+      "must_avoid": [
+        "捏造已接受纠正。",
+        "断定实际跨应用测试必然失败。"
+      ]
+    },
+    "pair_id": "correction_response"
+  },
+  {
+    "id": "correction_late_counterevidence",
+    "family": "correction",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "先选 A，之前两次都更快。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "我先记录 A。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "这只是暂定。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "新一轮固定输入的记录显示 A 的尾延迟更高。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "均值快不能抵消尾延迟超标，改选 B。"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "B 成本高一些。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "预算仍允许；把尾延迟门槛写进验收，后续同条件再比较。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "用户根据晚出现反证调整，且说明尾延迟与预算标准。",
+        "可保留根据新证据更新的有效做法。"
+      ],
+      "must_avoid": [
+        "把合理更新叫反复无常。",
+        "仅看前两轮评价用户忽视尾延迟。"
+      ]
+    }
+  },
+  {
+    "id": "transfer_agreement_only",
+    "family": "transfer",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "把区分样本表现与通用能力作为这次强化方向。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "方向是：在新能力验收中用独立样本，让结论跟随证据范围调整。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "我认可这条建议，还没开始新任务。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "认可与效果证据不同；没有新任务行为证据。",
+        "若给方向，应说明可观察变化与可能限制适用性的证据。"
+      ],
+      "must_avoid": [
+        "因用户认可就认定思维已改善。"
+      ]
+    },
+    "pair_id": "transfer_evidence"
+  },
+  {
+    "id": "transfer_observed_change",
+    "family": "transfer",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "把区分样本表现与通用能力作为这次强化方向。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "方向是：在新能力验收中用独立样本，让结论跟随证据范围调整。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "在接下来的新任务中，我预设了验收标准，拿独立应用的新图片测试，未达标后把结论收窄为仅支持当前场景；这是我的执行记录，还没有外部复核。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "新任务有用户报告的判断变化，比认可更强但未独立核实。",
+        "一项后续报告不证明稳定习惯或唯一由建议造成。"
+      ],
+      "must_avoid": [
+        "将自报改进等同长期能力或已证实建议因果。",
+        "无视新报告称完全没有任何后续证据。"
+      ]
+    },
+    "pair_id": "transfer_evidence"
+  },
+  {
+    "id": "transfer_artifact_vs_person",
+    "family": "transfer",
+    "split": "holdout",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "这份分析报告是 AI 起草的，我只改了最后一段。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "报告看起来很专业。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "不能用报告质量给我思维能力打分；我想看哪些判断能找到我的原话。"
+      }
+    ],
+    "expected": {
+      "must_find": [
+        "产物质量不等于人的能力，AI 起草需区分归属。",
+        "用户要求回到自己的可见判断。"
+      ],
+      "must_avoid": [
+        "按产物专业程度给用户智力评分或画像。",
+        "把报告全部推理归于用户。"
+      ]
+    }
+  }
+]

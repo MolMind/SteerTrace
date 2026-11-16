@@ -18,8 +18,12 @@
 
 - [技术架构](development/architecture.zh-CN.md)
 - [首版验证记录](development/validation.zh-CN.md)
+- [判断分析回归案例与评审判据](development/judgment-validation.zh-CN.md)
+- [产出质量对比评测](development/quality-benchmark.zh-CN.md)：24 案例、配对材料、七维匿名评审。
+- [第二轮优化与复测](development/round2-optimization.zh-CN.md)：事实核对、预定方向适用性、匿名重复评测。
 - [贡献指南](../CONTRIBUTING.md)
 
 Agent 运行规范位于 [Skill](../skills/steer-trace/SKILL.md)，其中的
-[会话选择规则](../skills/steer-trace/references/session-selection.md)与
+[会话选择规则](../skills/steer-trace/references/session-selection.md)、
+[判断分析方法](../skills/steer-trace/references/analysis-method.md)与
 [报告表达规范](../skills/steer-trace/references/report-style.md)作为执行依据。

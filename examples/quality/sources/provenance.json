@@ -1,0 +1,16 @@
+{
+  "repository": "https://github.com/AMDResearch/dh_comms",
+  "commit": "ad8f2317cc7301614b7cdbcf744f00cb0e4a8b5a",
+  "license": "MIT",
+  "retrieved": "2026-11-14",
+  "files": {
+    "session-review.md": {
+      "url": "https://raw.githubusercontent.com/AMDResearch/dh_comms/ad8f2317cc7301614b7cdbcf744f00cb0e4a8b5a/.agents/skills/session-review/SKILL.md",
+      "sha256": "92cea5554b0d31eb4400eaf11b50916fc29959a67ebc77a20ff844f19695d7be"
+    },
+    "session-review-LICENSE.txt": {
+      "url": "https://raw.githubusercontent.com/AMDResearch/dh_comms/ad8f2317cc7301614b7cdbcf744f00cb0e4a8b5a/LICENSE",
+      "sha256": "abffadc62d1cc14a48331371021e85bbcf8a83d30ff7168943674343a06396ca"
+    }
+  }
+}

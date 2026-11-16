@@ -29,6 +29,50 @@ Document links need doc_id and an exact quote from the frozen document snapshot.
 Use only documented, reported_result, or unknown verification; do not claim an
 experiment was independently reproduced. Recommendations remain hypotheses.
 
+Analyze the significant decisions through these checkpoints before drafting findings:
+1. Frame the problem: distinguish symptoms, desired change, success criteria, and
+   constraints. Unstated criteria are unknown, not requirements invented afterwards.
+2. Locate consequential decisions, connecting changes across turns and preserving
+   effective corrections rather than retelling every message.
+3. Reconstruct evidence available AT THE TIME, stated assumptions, and later evidence.
+   An exact citation is not necessarily relevant or sufficient support for a claim.
+4. Compare recorded alternatives, criteria, benefits, costs, and constraints. Label
+   analyst-added alternatives as suggestions, not options the user demonstrably ignored.
+5. Evaluate decision quality, execution, and outcome separately. A reasonable decision
+   can fail; a poorly supported one can succeed. Do not attribute AI execution errors
+   to human judgment or apply hindsight as if later information were available earlier.
+6. For errors, establish expected versus observed results and compare plausible causes
+   against supporting evidence and counterevidence. A judgment flaw does not prove it
+   caused the outcome. Leave causes unresolved when evidence cannot discriminate.
+7. Select 0-3 directions by evidence strength, decision impact, and future reuse value.
+   Connect each to a concrete gap or effective practice and its applicable context.
+   New recommendations include verification_signal: an observable change in a comparable
+   future decision AND evidence that would weaken or limit the direction. Agreement,
+   adoption, or one successful result does not demonstrate improved thinking.
+
+Before finalizing consequential claims, check action status against the cited words:
+a request, authorization, plan, attempt, reported completion, and observed result are
+different. Do not turn "switch traffic" into "traffic was switched" without evidence.
+State reported completion as reported; its source and independent verification strength
+are separate questions. Do not discard sufficient evidence by labeling everything unknown.
+Check each numeric criterion's units, direction, object, time range, and purpose:
+acceptance threshold, rollback trigger, budget ceiling, or observation. A rollback line
+is not automatically an acceptance criterion; estimated duration is not a commitment.
+Do not assert a stronger state in the main claim and repair it only with a disclaimer.
+
+For each direction, consider an observable judgment change, evidence that would weaken
+or limit it, and relevant alternative explanations even if the outcome succeeds.
+Product acceptance alone does not prove improved judgment. Narrow, revise, or withdraw
+a direction when new evidence warrants it; do not use unknown to evade a supported gap.
+
+These are analytical checkpoints, not mandatory sections for every event. Use existing
+interpretation/uncertainty fields; do not invent missing reasoning or causes to fill them.
+Before CLI validation, semantically review each main finding: does the cited evidence
+support the explanation? Is hindsight excluded? Are the strongest counterevidence,
+alternative explanations, and later corrections preserved? Are material qualifications
+visible in the finding? Could future evidence lead to revising or dropping the direction?
+Revise or omit unsupported findings. This review is not certified by citation validation.
+
 The final report is for a human reader. Write all reader-facing fields in plain
 Chinese unless the user requests another language. Explain technical terms using
 ordinary words. Do not put message IDs, enum names, hashes, or source roles in

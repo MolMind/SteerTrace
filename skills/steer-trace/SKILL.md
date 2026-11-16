@@ -44,6 +44,9 @@ own current-session identities and the client-specific native routes.
    evidence, not permission to scan the project. Do not allow partial history
    silently; explain its coverage before using `--allow-partial`.
 4. Read `ANALYZE.md`, every numbered evidence packet, and the event template.
+   Apply the [judgment analysis method](references/analysis-method.md) before writing
+   findings; check action status and the purpose/scope of numeric criteria for each
+   consequential claim, then perform semantic review before CLI validation.
    Produce one `events.json`. Deduplicate across packets; preserve exact IDs and
    substrings. Report no events when evidence is insufficient. Up to three thinking-strengthening
    directions is a ceiling, not a quota.
@@ -73,6 +76,9 @@ establish a cross-session habit. Missing discussion is not missing thought. Keep
 effective actions and counterevidence. Directions should describe the reasoning to strengthen and its value at a specific
 decision point, using collegial language rather than instructions to the user.
 Their effectiveness remains hypothetical until a new task provides evidence.
+New directions include a `verification_signal`: an observable change in a comparable
+future decision and evidence that would weaken or limit the direction. Do not infer
+improvement from adoption, agreement, or one successful outcome.
 
 ## Scope
 
