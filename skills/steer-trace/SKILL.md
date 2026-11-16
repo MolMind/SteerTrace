@@ -7,6 +7,10 @@ description: Analyze judgment and error attribution when working with AI, using 
 
 Use SteerTrace to analyze how the user framed a problem, evaluated AI advice,
 made decisions, and attributed or corrected errors in a specified conversation.
+Review the idea-to-delivery collaboration, especially how the user accepted,
+questioned, or adjusted AI advice. Inspect the AI proposals and reported implementations
+that informed those choices; identify consequential omissions and offer concrete,
+evidence-grounded advice as well as preserving effective judgments.
 Connect judgments to stated evidence; distinguish supported explanations from
 hypotheses and unresolved causes. Do not infer causality from sequence alone. Reuse
 the user's stated scope; do not discover unrelated account histories. No API key
@@ -81,10 +85,27 @@ No medical, intelligence, moral, or personality labels. One session does not
 establish a cross-session habit. Missing discussion is not missing thought. Keep
 effective actions and counterevidence. Directions should describe the reasoning to strengthen and its value at a specific
 decision point, using collegial language rather than instructions to the user.
+Concrete follow-up questions, checks, or comparisons are welcome in `next_check`
+and `better_move`; explain what decision evidence they would add. A newly suggested
+check is not proof the user never considered it. No proven user mistake does not
+necessarily mean no useful advice; omit advice that adds no material value.
 Their effectiveness remains hypothetical until a new task provides evidence.
 New directions include a `verification_signal`: an observable change in a comparable
 future decision and evidence that would weaken or limit the direction. Do not infer
 improvement from adoption, agreement, or one successful outcome.
+
+## Existing strengths and incremental advice
+
+Put evidenced practices already adopted or corrected in `review.keep_doing`, with
+accurate action status and scope. A recommendation must add decision value beyond
+the final record: an unresolved evidence gap or a concrete adaptation to a stated
+new constraint/scope. Explain that addition in `next_check`. Merely rephrasing a
+completed check or saying "do this again next time" belongs in strengths, not advice.
+The same event may support both, only for distinct contributions. Withdraw repeated
+checks after later completion reports; lack of independent reproduction alone does
+not justify demanding repetition. Do not invent future expansion to justify advice.
+Empty recommendations alongside useful strengths are valid. Semantic review, not
+keyword matching or CLI validation, determines incremental value.
 
 ## Scope
 

@@ -11,7 +11,7 @@ OWNERSHIP = {"human_proposed", "ai_proposed_human_selected", "authorization_only
 POSTURES = {"observed_submission", "contextual_inference", "unknown"}
 RELATIONS = {"records_matching_constraint", "records_plan", "reports_result"}
 VERIFICATION = {"documented", "reported_result", "unknown"}
-FILLER = {"继续", "可以", "好的", "好", "ok", "yes", "continue"}
+FILLER = {"继续", "可以，继续", "可以,继续", "可以", "好的", "好", "ok", "yes", "continue"}
 
 
 def load_run(run: Path) -> tuple[dict, dict, list[dict]]:

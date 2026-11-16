@@ -17,6 +17,9 @@
 ## 开发与验证 · development/
 
 - [技术架构](development/architecture.zh-CN.md)
+- [围绕成立初衷的优化建议](development/original-intent-optimization.zh-CN.md)：定位对照、优化重点与下一轮验收标准。
+- [已有做法与新增建议的边界](development/advice-boundary.zh-CN.md)：分流标准、具体例子与兼容说明。
+- [初衷对齐优化比较](development/intent-comparison.zh-CN.md)：36份实际产出、匿名评审、独立复核及结论边界。
 - [首版验证记录](development/validation.zh-CN.md)
 - [判断分析回归案例与评审判据](development/judgment-validation.zh-CN.md)
 - [产出质量对比评测](development/quality-benchmark.zh-CN.md)：24 案例、配对材料、七维匿名评审。

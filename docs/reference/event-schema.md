@@ -88,7 +88,7 @@ association is supported, leave the list empty and describe the limitation.
 
 New recommendations include non-empty `verification_signal`: an observable change in a
 comparable future decision and evidence that would weaken or limit the direction.
-`next_check` describes context and value; `verification_signal` makes effectiveness testable.
+`next_check` describes context and value, and may offer concrete questions, checks, or comparisons with their decision value; `verification_signal` makes effectiveness testable.
 Agreement, adoption, and one successful outcome do not establish improvement. Older v1
 recommendations without the field remain valid with a warning; a supplied empty or non-text
 field is invalid. The validator cannot assess whether the signal is meaningful.
@@ -148,11 +148,21 @@ Use plain language. Firm criticism of a specific judgment is encouraged when
 supported. Personality labels, presumed motives, intelligence ratings, invented
 outcomes, and source IDs embedded in prose do not belong in the report.
 
+## Strengths versus incremental advice
+
+`review.keep_doing` records evidenced practices already adopted or effectively corrected.
+`recommendations` adds an unresolved decision-evidence check or a concrete adaptation
+to a stated new constraint/scope; explain its increment in `next_check`.
+Repeated descriptions of completed checks belong in strengths, not recommendations.
+Use the final recorded status, preserving reported-result qualifiers. Empty advice
+with useful strengths is valid. These distinctions require semantic review; schema
+validation does not certify incremental value. Existing v1 analyses remain compatible.
+
 ## Presentation tone
 
-Recommendations are thinking-strengthening directions, not instructions to the reader.
+Recommendations connect reasoning directions to useful concrete advice in a collegial tone.
 `text` names a concrete reasoning direction; `next_check` describes its value in a
-specific decision context. Apply this tone to `better_move` and `keep_doing` too.
+specific decision context, including useful concrete questions, checks, or comparisons. Distinguish analyst-added checks from recorded omissions or proven user errors. Apply this tone to `better_move` and `keep_doing` too.
 Keep `uncertainty` and `limitations` in analysis JSON; the report omits their standalone
 sections. Material qualifications belong in the finding they affect. See the
 [report style contract](../../skills/steer-trace/references/report-style.md).

@@ -1,0 +1,319 @@
+[
+  {
+    "id": "completed",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "做一个店内库存工具，停业后迁移，已有数量和明细都要保留。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "建议保存备份，在测试环境恢复后核对明细，再迁移。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "按这个方案，先做恢复核对，不操作生产。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已实现迁移脚本；备份存在，恢复核对还没执行。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "我需要看到实际检查结果，再判断是否切换。"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "测试环境恢复后数量和明细一致；恢复检查报告已整理，生产未操作。"
+      }
+    ],
+    "analysis": {
+      "schema_version": "steertrace.events/v1",
+      "run_id": "REPLACE_WITH_PREPARED_RUN_ID",
+      "events": [
+        {
+          "id": "E1",
+          "kind": "constraint",
+          "summary": "以恢复核对支持迁移判断",
+          "ownership": "human_proposed",
+          "evidence_posture": "observed_submission",
+          "user_evidence": [
+            {
+              "message_id": "u3",
+              "quote": "我需要看到实际检查结果，再判断是否切换。"
+            }
+          ],
+          "before": [
+            {
+              "message_id": "a2",
+              "quote": "已实现迁移脚本；备份存在，恢复核对还没执行。"
+            }
+          ],
+          "after": [
+            {
+              "message_id": "a3",
+              "quote": "测试环境恢复后数量和明细一致；恢复检查报告已整理，生产未操作。"
+            }
+          ],
+          "interpretation": "你把迁移判断与实际恢复核对关联起来，AI随后报告核对通过。",
+          "uncertainty": "完成状态来自AI报告，未独立复现；不据此证明长期判断改善。",
+          "ai_response": "测试环境恢复后数量和明细一致；恢复检查报告已整理，生产未操作。",
+          "document_links": []
+        }
+      ],
+      "review": {
+        "headline": "已有判断与剩余依据分开呈现",
+        "summary": "你把迁移判断与实际恢复核对关联起来，AI随后报告核对通过。",
+        "keep_doing": [
+          "你把迁移判断与实际恢复核对关联起来，AI随后报告核对通过。"
+        ]
+      },
+      "criticisms": [],
+      "recommendations": [],
+      "limitations": [
+        "人工构造与编写示例，仅验证结构和呈现，不是独立模型评测。"
+      ]
+    },
+    "expected": {
+      "placement": "keep_doing only",
+      "must_avoid": "不得把未独立复现当成重复检查的唯一理由；不得把AI完成报告写成独立验证。"
+    }
+  },
+  {
+    "id": "unresolved",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "做一个店内库存工具，停业后迁移，已有数量和明细都要保留。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "建议保存备份，在测试环境恢复后核对明细，再迁移。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "按这个方案，先做恢复核对，不操作生产。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已实现迁移脚本；备份存在，恢复核对还没执行。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "我需要看到实际检查结果，再判断是否切换。"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "恢复核对还没有执行，当前只有脚本和备份文件；生产未操作。"
+      }
+    ],
+    "analysis": {
+      "schema_version": "steertrace.events/v1",
+      "run_id": "REPLACE_WITH_PREPARED_RUN_ID",
+      "events": [
+        {
+          "id": "E1",
+          "kind": "constraint",
+          "summary": "以恢复核对支持迁移判断",
+          "ownership": "human_proposed",
+          "evidence_posture": "observed_submission",
+          "user_evidence": [
+            {
+              "message_id": "u3",
+              "quote": "我需要看到实际检查结果，再判断是否切换。"
+            }
+          ],
+          "before": [
+            {
+              "message_id": "a2",
+              "quote": "已实现迁移脚本；备份存在，恢复核对还没执行。"
+            }
+          ],
+          "after": [
+            {
+              "message_id": "a3",
+              "quote": "恢复核对还没有执行，当前只有脚本和备份文件；生产未操作。"
+            }
+          ],
+          "interpretation": "你明确要求先看恢复核对结果，再判断是否切换。",
+          "uncertainty": "完成状态来自AI报告，未独立复现；不据此证明长期判断改善。",
+          "ai_response": "恢复核对还没有执行，当前只有脚本和备份文件；生产未操作。",
+          "document_links": []
+        }
+      ],
+      "review": {
+        "headline": "已有判断与剩余依据分开呈现",
+        "summary": "你明确要求先看恢复核对结果，再判断是否切换。",
+        "keep_doing": [
+          "你明确要求先看恢复核对结果，再判断是否切换。"
+        ]
+      },
+      "criticisms": [],
+      "recommendations": [
+        {
+          "event_ids": [
+            "E1"
+          ],
+          "text": "将迁移判断关联到当前范围的验证",
+          "next_check": "在测试环境恢复备份并比较数量与明细，可补充备份存在之外的恢复依据。",
+          "status": "hypothesis",
+          "verification_signal": "后续同范围迁移的选择明确参考该路径核对结果；若已有覆盖相同条件的检查，可撤回重复建议，单次成功不证明思维改善。"
+        }
+      ],
+      "limitations": [
+        "人工构造与编写示例，仅验证结构和呈现，不是独立模型评测。"
+      ]
+    },
+    "expected": {
+      "placement": "keep_doing plus distinct advice",
+      "must_avoid": "不得把未独立复现当成重复检查的唯一理由；不得把AI完成报告写成独立验证。"
+    }
+  },
+  {
+    "id": "new_scope",
+    "messages": [
+      {
+        "id": "u1",
+        "role": "user",
+        "content": "做一个店内库存工具，停业后迁移，已有数量和明细都要保留。"
+      },
+      {
+        "id": "a1",
+        "role": "assistant",
+        "content": "建议保存备份，在测试环境恢复后核对明细，再迁移。"
+      },
+      {
+        "id": "u2",
+        "role": "user",
+        "content": "按这个方案，先做恢复核对，不操作生产。"
+      },
+      {
+        "id": "a2",
+        "role": "assistant",
+        "content": "已实现迁移脚本；备份存在，恢复核对还没执行。"
+      },
+      {
+        "id": "u3",
+        "role": "user",
+        "content": "我需要看到实际检查结果，再判断是否切换。"
+      },
+      {
+        "id": "a3",
+        "role": "assistant",
+        "content": "测试环境恢复后数量和明细一致；恢复检查报告已整理，生产未操作。"
+      },
+      {
+        "id": "u4",
+        "role": "user",
+        "content": "现在改为营业期间迁移，还会有新增库存写入。"
+      },
+      {
+        "id": "a4",
+        "role": "assistant",
+        "content": "现有脚本按停业迁移实现，尚未验证持续写入期间的数据一致性。"
+      }
+    ],
+    "analysis": {
+      "schema_version": "steertrace.events/v1",
+      "run_id": "REPLACE_WITH_PREPARED_RUN_ID",
+      "events": [
+        {
+          "id": "E1",
+          "kind": "constraint",
+          "summary": "以恢复核对支持迁移判断",
+          "ownership": "human_proposed",
+          "evidence_posture": "observed_submission",
+          "user_evidence": [
+            {
+              "message_id": "u3",
+              "quote": "我需要看到实际检查结果，再判断是否切换。"
+            }
+          ],
+          "before": [
+            {
+              "message_id": "a2",
+              "quote": "已实现迁移脚本；备份存在，恢复核对还没执行。"
+            }
+          ],
+          "after": [
+            {
+              "message_id": "a3",
+              "quote": "测试环境恢复后数量和明细一致；恢复检查报告已整理，生产未操作。"
+            }
+          ],
+          "interpretation": "停业迁移的恢复核对已有完成报告，你此前要求以检查结果支持切换判断。",
+          "uncertainty": "完成状态来自AI报告，未独立复现；不据此证明长期判断改善。",
+          "ai_response": "测试环境恢复后数量和明细一致；恢复检查报告已整理，生产未操作。",
+          "document_links": []
+        },
+        {
+          "id": "E2",
+          "kind": "constraint",
+          "summary": "营业期间迁移增加持续写入条件",
+          "ownership": "human_proposed",
+          "evidence_posture": "observed_submission",
+          "user_evidence": [
+            {
+              "message_id": "u4",
+              "quote": "现在改为营业期间迁移，还会有新增库存写入。"
+            }
+          ],
+          "before": [
+            {
+              "message_id": "a3",
+              "quote": "测试环境恢复后数量和明细一致；恢复检查报告已整理，生产未操作。"
+            }
+          ],
+          "after": [
+            {
+              "message_id": "a4",
+              "quote": "现有脚本按停业迁移实现，尚未验证持续写入期间的数据一致性。"
+            }
+          ],
+          "interpretation": "新范围包含持续写入，可核对增量写入的同步与切换前后明细一致性；此前停业恢复未覆盖并发写入。",
+          "uncertainty": "完成状态来自AI报告，未独立复现；不据此证明长期判断改善。",
+          "ai_response": "现有脚本按停业迁移实现，尚未验证持续写入期间的数据一致性。",
+          "document_links": []
+        }
+      ],
+      "review": {
+        "headline": "已有判断与剩余依据分开呈现",
+        "summary": "停业迁移的恢复核对已有完成报告，你此前要求以检查结果支持切换判断。",
+        "keep_doing": [
+          "停业迁移的恢复核对已有完成报告，你此前要求以检查结果支持切换判断。"
+        ]
+      },
+      "criticisms": [],
+      "recommendations": [
+        {
+          "event_ids": [
+            "E2"
+          ],
+          "text": "将迁移判断关联到当前范围的验证",
+          "next_check": "新范围包含持续写入，可核对增量写入的同步与切换前后明细一致性；此前停业恢复未覆盖并发写入。",
+          "status": "hypothesis",
+          "verification_signal": "后续同范围迁移的选择明确参考该路径核对结果；若已有覆盖相同条件的检查，可撤回重复建议，单次成功不证明思维改善。"
+        }
+      ],
+      "limitations": [
+        "人工构造与编写示例，仅验证结构和呈现，不是独立模型评测。"
+      ]
+    },
+    "expected": {
+      "placement": "keep_doing plus distinct advice",
+      "must_avoid": "不得把未独立复现当成重复检查的唯一理由；不得把AI完成报告写成独立验证。"
+    }
+  }
+]
