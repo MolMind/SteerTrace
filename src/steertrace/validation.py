@@ -70,6 +70,8 @@ def validate(run: Path, events: dict) -> dict:
                 error(f"{label}: credential placeholders cannot support a judgment event.")
             else:
                 checked_quotes += 1
+                if role == "assistant" and len(quote.strip()) < 12 and len(message["text"]) > 40:
+                    warnings.append(f"{label}: short AI excerpt in {mid}; review semantic completeness manually.")
             positions.append(order[mid])
         return positions
 
@@ -101,6 +103,12 @@ def validate(run: Path, events: dict) -> dict:
         for field, allowed in (("kind", KINDS), ("ownership", OWNERSHIP), ("evidence_posture", POSTURES)):
             if not isinstance(event.get(field), str) or event[field] not in allowed:
                 error(f"{label}: unsupported {field}.")
+        if "ai_response" in event:
+            required_text(event, "ai_response", label)
+            if not event.get("after"):
+                error(f"{label}: ai_response requires after evidence.")
+        else:
+            warnings.append(f"{eid or label}: legacy event has no ai_response summary.")
         user = references(event.get("user_evidence"), "user", label + " user", required=True)
         before = references(event.get("before", []), "assistant", label + " before")
         after = references(event.get("after", []), "assistant", label + " after")
@@ -164,6 +172,13 @@ def validate(run: Path, events: dict) -> dict:
             required_text(criticism, field, "criticism")
         if criticism.get("basis") not in ("observed_instance", "inference"):
             error("Criticism basis must distinguish an observed instance from inference.")
+        target = criticism.get("attribution")
+        if target is None:
+            warnings.append("Legacy criticism has no attribution; responsibility remains unknown.")
+        elif not isinstance(target, str) or target not in {"user", "ai", "shared", "unknown"}:
+            error("Criticism attribution must be user, ai, shared, or unknown.")
+        else:
+            required_text(criticism, "attribution_reason", "criticism")
         refs = criticism.get("event_ids")
         if not isinstance(refs, list) or not refs or any(not isinstance(x, str) or x not in ids for x in refs):
             error("Criticism must cite existing event IDs.")

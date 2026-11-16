@@ -35,7 +35,8 @@
           "relation": "records_matching_constraint",
           "verification": "documented"
         }
-      ]
+      ],
+      "ai_response": "AI 回应：改为目标驱动，只在证据不足时补充信息。"
     },
     {
       "id": "E2",
@@ -65,7 +66,8 @@
           "relation": "records_matching_constraint",
           "verification": "documented"
         }
-      ]
+      ],
+      "ai_response": "AI 回应：建议对照串行和延迟并发，先冻结输入与计时口径。"
     },
     {
       "id": "E3",
@@ -100,7 +102,8 @@
           "relation": "records_plan",
           "verification": "documented"
         }
-      ]
+      ],
+      "ai_response": "AI 回应：方案已记录；实验还没有执行。"
     },
     {
       "id": "E4",
@@ -128,7 +131,8 @@
       ],
       "interpretation": "这句话只说明你允许继续，不能把 AI 的方案细节全部算成你提出的想法。",
       "uncertainty": "这句话没有说明你怎样判断方案，也无法据此评价你是否理解了方案。",
-      "document_links": []
+      "document_links": [],
+      "ai_response": "AI 回应：下一步准备测试，未启动训练。"
     },
     {
       "id": "E5",
@@ -151,7 +155,8 @@
       ],
       "interpretation": "你主动放弃了新样本验证，把已经看过的几张图片当成判断通用能力的依据。这不足以支持跨场景的结论。",
       "uncertainty": "这里只能批评这次明确说出的验证标准，不能推断你一贯轻视测试，也不能断定方案实际失败。",
-      "document_links": []
+      "document_links": [],
+      "ai_response": "AI 回应：已有图片上的结果不能证明跨应用能力，需要独立样本。"
     }
   ],
   "recommendations": [
@@ -198,7 +203,9 @@
       "title": "样本表现与通用能力之间存在证据缺口",
       "problem": "几张已见图片上的正确结果，可以支持当前样本的表现判断，但不足以证明跨场景的通用能力。",
       "consequence": "按这个标准继续，可能把只对旧样本有效的方案当成可交付能力，换个应用就暴露问题。",
-      "better_move": "将已见样本表现与泛化证据分开看：冻结方案后的独立应用与新图片表现，能为能力边界提供更充分的依据。"
+      "better_move": "将已见样本表现与泛化证据分开看：冻结方案后的独立应用与新图片表现，能为能力边界提供更充分的依据。",
+      "attribution": "user",
+      "attribution_reason": "用户明确提出以已见图片判断通用能力；AI 后续回应指出需要独立样本。"
     }
   ]
 }

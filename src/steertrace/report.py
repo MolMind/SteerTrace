@@ -5,6 +5,7 @@ from html import escape
 from importlib.resources import files
 from pathlib import Path
 
+from .report_time import parse_time
 from .storage import TraceError
 from .validation import load_run, validate
 
@@ -14,6 +15,8 @@ OWNERSHIP = {
     "authorization_only": "你同意继续",
     "unknown": "暂时无法判断是谁提出的",
 }
+ATTRIBUTION = {"user": "用户判断", "ai": "AI 表达或执行", "shared": "双方理解与协作", "unknown": "归因待核对"}
+
 KINDS = {"goal": "确定目标", "question": "提出疑问", "critique": "纠正方案",
          "constraint": "划定范围", "tradeoff": "明确取舍", "selection": "选择方案",
          "authorization": "同意继续", "stop": "叫停工作"}
@@ -43,6 +46,7 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
         raise TraceError("Report refused: " + "; ".join(result["errors"]))
     _, conversation, documents = load_run(run)
     order = {m["id"]: i for i, m in enumerate(conversation["messages"])}
+    messages = {m["id"]: m for m in conversation["messages"]}
     docs = {d["id"]: d for d in documents}
     events = sorted(analysis["events"], key=lambda e: min(order[r["message_id"]] for r in e["user_evidence"]))
     anchors = {e["id"]: f"decision-{i}" for i, e in enumerate(events, 1)}
@@ -55,23 +59,40 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
         return '<div class="related">当时的判断：' + " · ".join(
             f'<a href="#{anchors[eid]}">第 {numbers[eid]} 步</a>' for eid in ids) + '</div>'
 
+    def dated_quotes(refs):
+        return ''.join(time_label([r]) + quotes([r]) for r in refs)
+
+    def time_label(refs):
+        dates = [parse_time(messages[r["message_id"]].get("timestamp")) for r in refs]
+        valid = [d for d in dates if d is not None]
+        if not valid:
+            return '<p class="event-time">时间未记录</p>'
+        first, last = min(valid), max(valid)
+        def tag(d):
+            return f'<time datetime="{d.isoformat()}">{d:%Y-%m-%d %H:%M:%S}</time>'
+        label = tag(first) + (' — ' + tag(last) if first != last else '')
+        return '<p class="event-time">' + label + ' · UTC+8' + (' · 部分时间缺失' if len(valid) != len(dates) else '') + '</p>'
+
     blocks = []
     for c in criticisms:
-        blocks.append('<article class="criticism"><span class="eyebrow">值得关注的判断</span>'
-                      f'<h3>{h(c["title"])}</h3>' +
-                      ('<p class="inference">这是基于上下文的推测，需要你核对。</p>' if c["basis"] == "inference" else '') +
+        attribution = ATTRIBUTION[c.get("attribution", "unknown")]
+        blocks.append('<article class="criticism"><span class="eyebrow">值得关注的问题</span>'
+                      f'<h3>{h(c["title"])}</h3><p class="attribution">归因：{attribution}</p>' +
+                      (paragraph(c["attribution_reason"], "attribution-reason") if c.get("attribution_reason") else '') +
+                      ('<p class="inference">这是基于上下文的推测。</p>' if c["basis"] == "inference" else '') +
                       '<dl>' + ''.join(f'<div><dt>{label}</dt><dd>{h(c[field])}</dd></div>' for label, field in
-                                      (("判断偏差", "problem"), ("潜在影响", "consequence"), ("思维强化方向", "better_move"))) +
+                                      (("具体问题", "problem"), ("潜在影响", "consequence"), ("思维强化方向", "better_move"))) +
                       '</dl>' + links(c["event_ids"]) + '</article>')
     criticism_html = ''.join(blocks) or paragraph("当前记录未呈现有充分依据的判断偏差。", "empty")
     strengths = review.get("keep_doing", [])
     strength_html = '<ul class="strengths">' + ''.join(f'<li>{h(s)}</li>' for s in strengths) + '</ul>' if strengths else ''
     cards = []
+    previous_day = None
     for i, e in enumerate(events, 1):
         context = ''
-        for label, field in (("AI 当时的提议", "before"), ("AI 随后的回应", "after")):
+        for label, field in (("此前 AI 的建议或说明", "before"), ("随后 AI 的回应原文", "after")):
             if e.get(field):
-                context += f'<h4>{label}</h4>' + quotes(e[field])
+                context += f'<h4>{label}</h4>' + dated_quotes(e[field])
         document_html = ''
         for link in e.get("document_links", []):
             doc = docs[link["doc_id"]]
@@ -79,17 +100,27 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
             document_html += f'<h4>{h(Path(doc["path"]).name)}</h4>' + paragraph(status, "muted") + f'<blockquote>{h(link["quote"])}</blockquote>'
         if document_html:
             context += '<h4>方案里怎么写</h4>' + document_html
-        elif context:
-            context += paragraph("这一步没有找到可以对应的文档内容。", "muted")
+
         category = "attention" if e["id"] in flagged else "choice" if e["kind"] in {"tradeoff", "selection"} else "other"
+        dates = [parse_time(messages[r["message_id"]].get("timestamp")) for r in e["user_evidence"]]
+        first_date = dates[0] if dates else None
+        day = first_date.date().isoformat() if first_date else None
+        if day and day != previous_day:
+            cards.append(f'<h3 class="timeline-day">{day}</h3>')
+        previous_day = day
+        response = (paragraph(e["ai_response"]) if e.get("ai_response") else
+                    dated_quotes(e.get("after", [])) if e.get("after") else
+                    paragraph("记录中没有可对应的后续 AI 回应。", "muted"))
         cards.append(f'<article class="event" id="decision-{i}" data-category="{category}" data-choice="{str(e["kind"] in {"tradeoff", "selection"}).lower()}">'
                      f'<div class="step" aria-hidden="true">{i:02}</div><div class="event-body">'
                      f'<div class="tags"><span>{KINDS[e["kind"]]}</span><span>{OWNERSHIP[e["ownership"]]}</span>' +
-                     ('<span class="attention-tag">值得关注</span>' if e["id"] in flagged else '') + '</div>'
-                     f'<h3>{h(e["summary"])}</h3><h4>你当时说</h4>' + quotes(e["user_evidence"]) +
-                     '<h4>这意味着什么</h4>' + paragraph(e["interpretation"]) +
+                     ('<span class="attention-tag">值得关注</span>' if e["id"] in flagged else '') + '</div>' +
+                     time_label(e["user_evidence"]) +
+                     f'<h3>{h(e["summary"])}</h3><h4>你当时说</h4>' + (dated_quotes(e["user_evidence"]) if len(e["user_evidence"]) > 1 else quotes(e["user_evidence"])) +
+                     '<section class="ai-response"><h4>AI 如何响应</h4>' + response + '</section>' +
+                     '<h4>本次复盘分析</h4>'  + paragraph(e["interpretation"]) +
                      ('<p class="inference">这部分解释包含推测。</p>' if e["evidence_posture"] != "observed_submission" else '') +
-                     '<details><summary>' + icon('chevron-right') + '<span>对话与文档</span></summary><div class="evidence-content">' + (context or paragraph("没有更多上下文。")) +
+                     '<details><summary>' + icon('chevron-right') + '<span>查看原始依据</span></summary><div class="evidence-content">' + (context or paragraph("没有更多上下文。")) +
                      '</div></details></div></article>')
     event_html = ''.join(cards) or paragraph("没有记录可支持的关键判断。这不说明你没有思考。", "empty")
     rec_html = ''.join(f'<article class="next-action"><span class="action-number">{i:02}</span><div><h3>{h(r["text"])}</h3>'
@@ -97,6 +128,8 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
                        ('<h4>后续如何检验</h4>' + paragraph(r["verification_signal"]) if 'verification_signal' in r else '') +
                        links(r["event_ids"]) + '</div></article>'
                        for i, r in enumerate(analysis["recommendations"], 1)) or paragraph("当前记录未呈现需要额外强化的方向。", "empty")
+    coverage_note = ("本次仅分析对话，未纳入项目文档。" if not documents else
+                     f"本次分析对话及 {len(documents)} 份项目文档快照；文档记录不等于独立验证。")
     headline = review.get("headline", "回看你怎样推动了这次工作")
     summary = review.get("summary", "从你提出的要求、作出的选择和 AI 的回应，回看这次合作里值得保留和需要调整的做法。")
     css = files("steertrace").joinpath("assets/report.css").read_text(encoding="utf-8")
@@ -134,10 +167,11 @@ def render(run: Path, analysis: dict) -> tuple[str, dict]:
 <div class="guide-bottom"><span>阅读方法 · 非本次分析结论</span><span id="guide-count">01 / 03</span></div></div></div></div></section>
 <div class="report-content">
 <section id="overview"><div class="section-heading"><span class="section-number">01</span><h2>先看结论</h2></div>
-<div class="overview-grid"><div class="stat"><strong>{len(events)}</strong><span>个关键判断</span></div><div class="stat"><strong>{len(criticisms)}</strong><span>项待审视的判断</span></div><div class="stat"><strong>{len(analysis["recommendations"])}</strong><span>个强化方向</span></div></div>
+<p class="coverage-note">{h(coverage_note)}</p>
+<div class="overview-grid"><div class="stat"><strong>{len(events)}</strong><span>个关键判断</span></div><div class="stat"><strong>{len(criticisms)}</strong><span>项待审视的问题</span></div><div class="stat"><strong>{len(analysis["recommendations"])}</strong><span>个强化方向</span></div></div>
 {('<h3>值得延续的思维</h3>' + strength_html) if strength_html else ''}</section>
 <section id="criticism"><div class="section-heading"><span class="section-number">02</span><h2>判断与归因</h2></div>{criticism_html}</section>
-<section id="journey"><div class="section-heading"><span class="section-number">03</span><h2>回看判断过程</h2></div><p class="muted">按对话先后排列，顺序不代表前一句一定导致了后面的变化。</p>
+<section id="journey"><div class="section-heading"><span class="section-number">03</span><h2>回看判断过程</h2></div><p class="muted">按对话先后排列；时间统一显示为 UTC+8。缺失或异常时间保留原始顺序，先后不代表因果。</p>
 <div class="toolbar" id="filters" hidden><label for="search">查找内容<input id="search" type="search" placeholder="输入目标、判断或原话" autocomplete="off"></label>
 <div class="filter-buttons" role="group" aria-label="筛选判断"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="attention" aria-pressed="false">值得关注</button><button data-filter="choice" aria-pressed="false">取舍与选择</button></div></div>
 <p id="match-count" class="muted" aria-live="polite"></p><div class="timeline">{event_html}</div><p id="no-matches" class="empty" hidden>没有找到符合条件的判断，试试清空搜索或切换分类。</p></section>

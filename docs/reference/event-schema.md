@@ -156,3 +156,22 @@ specific decision context. Apply this tone to `better_move` and `keep_doing` too
 Keep `uncertainty` and `limitations` in analysis JSON; the report omits their standalone
 sections. Material qualifications belong in the finding they affect. See the
 [report style contract](../../skills/steer-trace/references/report-style.md).
+
+## 回应摘要与问题归因（兼容 v1 的增量字段）
+
+新事件在存在 `after` 证据时提供 `ai_response`：概括 AI 公开表达的处理方式及
+自报结果，保留“报告已完成”“待验收”等限定，不重建内部思考。无后续证据时省略。
+提供该字段却缺少 `after` 引用会校验失败；旧事件仍可读取，以后续原话展示回应。
+引用选取完整语义单位并保留相关限制，不使用孤立标题或截断半句。
+短 AI 摘录会触发人工语义复核提示，不按字数判定证据真假。
+
+新批评提供 `attribution`（`user`、`ai`、`shared`、`unknown`）及非空
+`attribution_reason`。理由应与所引事件的原话、前后回应相符；分别表示用户判断、
+AI 表达或执行、双方协作、归因未定。字段值不能代替因果证据。
+旧批评缺失归因时保持有效并提示，页面显示“归因待核对”。
+评估测试范围时核对原有轮数与执行授权，区分实现自动测试功能和立即运行测试。
+出现停止指令不单独证明此前测试未经授权，也不证明已及时停止。
+
+报告按原始对话顺序排列，使用消息源时间（Unix 秒/毫秒或带时区 ISO 8601），
+统一显示 UTC+8；不使用报告生成时间代替事件时间。缺失、无时区、无效时间显示
+“时间未记录”，异常顺序不重排对话。合并事件显示时间范围，原话保留逐条时间。

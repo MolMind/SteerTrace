@@ -94,6 +94,8 @@ analysis. Deliver `report.html` using the fixed renderer, not an agent-designed
 Markdown report. Use plain language in every reader-facing field; source IDs,
 role labels, enums, and hashes stay in reference fields and machine artifacts.
 Include `review` (headline, summary, keep_doing) and `criticisms` in new analyses.
+Provide criticism attribution and its evidence-based reason; include an `ai_response`
+summary when after evidence exists, following the event schema.
 
 Be firm and specific about an evidenced mistake. A criticism names the concrete
 problem, possible cost, and a better action, citing existing events. Distinguish

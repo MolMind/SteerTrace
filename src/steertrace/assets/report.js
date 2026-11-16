@@ -12,6 +12,15 @@
       card.hidden = !(categoryMatches && card.textContent.toLocaleLowerCase().includes(query));
       if (!card.hidden) count++;
     });
+    document.querySelectorAll('.timeline-day').forEach(heading => {
+      let sibling = heading.nextElementSibling;
+      let visible = false;
+      while (sibling && !sibling.classList.contains('timeline-day')) {
+        if (sibling.classList.contains('event') && !sibling.hidden) visible = true;
+        sibling = sibling.nextElementSibling;
+      }
+      heading.hidden = !visible;
+    });
     document.getElementById('match-count').textContent = `显示 ${count} / ${cards.length} 个判断`;
     document.getElementById('no-matches').hidden = count !== 0 || cards.length === 0;
   }

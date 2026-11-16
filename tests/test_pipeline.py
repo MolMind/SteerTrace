@@ -33,6 +33,82 @@ class PipelineTests(unittest.TestCase):
         self.assertFalse(result["valid"], result)
         self.assertTrue(any(text in e for e in result["errors"]), result)
 
+    def test_attribution_and_response_contract(self):
+        event = self.events['events'][0]
+        event['ai_response'] = 'AI 报告调整为只处理当前目标。'
+        criticism = self.events['criticisms'][0]
+        criticism.update(attribution='ai', attribution_reason='所引回应中的表达存在证据缺口。')
+        text, result = render(self.run, self.events)
+        self.assertTrue(result['valid'])
+        self.assertIn('归因：AI 表达或执行', text)
+        self.assertIn('AI 如何响应', text)
+        self.assertIn('本次复盘分析', text)
+        self.assertIn('查看原始依据', text)
+        self.assertNotIn('这意味着什么', text)
+        self.assertNotIn('这一步没有找到', text)
+        self.assertLess(text.index(event['ai_response']), text.index('<h4>本次复盘分析'))
+        event['after'] = []
+        self.assert_invalid(self.events, 'ai_response requires after')
+        event.pop('ai_response')
+        criticism['attribution'] = []
+        self.assert_invalid(self.events, 'attribution must be')
+        criticism['attribution'] = 'user'
+        criticism['attribution_reason'] = ''
+        self.assert_invalid(self.events, 'attribution_reason')
+
+    def test_legacy_attribution_stays_unknown(self):
+        self.events['criticisms'][0].pop('attribution', None)
+        text, result = render(self.run, self.events)
+        self.assertTrue(result['valid'])
+        self.assertIn('归因待核对', text)
+        self.assertTrue(any('no attribution' in w for w in result['warnings']))
+
+    def test_timestamp_formats_and_invalid_values(self):
+        from steertrace.report_time import parse_time
+        expected = '2026-11-07T12:52:59.761000+08:00'
+        for value in (1794027179761, 1794027179.761, '2026-11-07T04:52:59.761Z',
+                      '2026-11-07T12:52:59.761+08:00'):
+            self.assertEqual(parse_time(value).isoformat(), expected)
+        for value in (None, True, [], {}, 'bad', '2026-11-07T12:00:00', float('inf'), 10**30):
+            self.assertIsNone(parse_time(value))
+
+    def test_source_time_ranges_and_order_preserved(self):
+        c = read_json(self.conversation)
+        c['messages'][0]['timestamp'] = '2026-11-09T12:00:00+08:00'
+        # Clock regression must not rewrite conversational sequence.
+        for m in c['messages'][1:]:
+            m['timestamp'] = '2026-11-07T12:00:00+08:00'
+        p = self.root / 'timed.json'
+        write_json(p, c)
+        run = self.root / 'timed'
+        manifest = prepare(p, ROOT, [], run)
+        self.events['run_id'] = manifest['run_id']
+        for e in self.events['events']:
+            e['document_links'] = []
+        text, result = render(run, self.events)
+        self.assertTrue(result['valid'])
+        self.assertIn('2026-11-09 12:00:00', text)
+        self.assertIn('UTC+8', text)
+        self.assertIn('本次仅分析对话，未纳入项目文档', text)
+        self.assertIn('timeline-day', text)
+        self.assertLess(text.index('id="decision-1"'), text.index('id="decision-2"'))
+
+    def test_short_ai_excerpt_warns_without_certifying_semantics(self):
+        c = read_json(self.conversation)
+        event = self.events['events'][0]
+        mid = event['after'][0]['message_id']
+        m = next(m for m in c['messages'] if m['id'] == mid)
+        m['text'] += '。' + '额外上下文' * 20
+        p = self.root / 'short.json'
+        write_json(p, c)
+        run = self.root / 'short'
+        manifest = prepare(p, ROOT, ['examples/synthetic/plan.md'], run)
+        self.events['run_id'] = manifest['run_id']
+        event['after'][0]['quote'] = m['text'][:5]
+        result = validate(run, self.events)
+        self.assertTrue(result['valid'])
+        self.assertTrue(any('semantic completeness' in w for w in result['warnings']))
+
     def test_example_end_to_end(self):
         text, checked = render(self.run, self.events)
         self.assertTrue(checked["valid"])
@@ -116,7 +192,7 @@ class PipelineTests(unittest.TestCase):
         self.events["criticisms"][0]["basis"] = "inference"
         text, checked = render(self.run, self.events)
         self.assertTrue(checked["valid"])
-        self.assertIn("项待审视的判断", text)
+        self.assertIn("项待审视的问题", text)
         self.assertNotIn("处关键偏差", text)
         self.assertIn("这是基于上下文的推测", text)
 
@@ -236,7 +312,8 @@ class PipelineTests(unittest.TestCase):
     def test_inferred_criticism_is_labeled(self):
         self.events["criticisms"][0]["basis"] = "inference"
         text, _ = render(self.run, self.events)
-        self.assertIn("这是基于上下文的推测，需要你核对", text)
+        self.assertIn("这是基于上下文的推测。", text)
+        self.assertNotIn("需要你核对", text)
 
     def test_html_escapes_model_text(self):
         attack = '<script src="https://evil.invalid/x"></script><img src=x onerror=alert(1)>'

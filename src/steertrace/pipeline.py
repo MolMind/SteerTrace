@@ -79,7 +79,16 @@ ordinary words. Do not put message IDs, enum names, hashes, or source roles in
 summaries or explanations; exact evidence references belong in reference fields.
 Include review {headline, summary, keep_doing: []} and criticisms: []. Each criticism
 needs event_ids, basis (observed_instance or inference), title, problem, consequence,
-and better_move. Be direct and firm about a specific mistake and its possible cost.
+and better_move. New criticisms also include attribution (user, ai, shared, unknown)
+and attribution_reason, supported by the cited events. AI execution errors are not
+user judgment errors. Preserve prior authorization and strongest counterevidence;
+distinguish requesting an automated test feature from authorizing immediate runs.
+Do not call repeated tests scope expansion solely from the number of runs.
+New events include ai_response only when after evidence supports a concise summary
+of what AI said or reported doing; otherwise omit it. Never infer hidden reasoning.
+Use AI consistently in reader-facing prose, not 助手. Quotes must preserve complete
+meaning and relevant qualifications, not isolated headings or cut-off clauses.
+Be direct and firm about a specific mistake and its possible cost.
 Frame recommendations as thinking-strengthening directions, not a lesson or task list.
 Use a direction such as “区分样本表现与通用能力” for text; next_check describes
 its value in a concrete decision context. Avoid commands like “你应该”, “下次先”
